@@ -115,12 +115,13 @@
         >
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.isDeleted == 1 ? true :false"
+              v-model="deleteFlag"
               class="switch"
               active-text="已删除"
               inactive-text="未删除"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onChange(scope.row.isDeleted)"
               @click.native="editDelete(scope.row.linkId,scope.row.isDeleted)"
             />
           </template>
@@ -177,6 +178,7 @@ export default {
   name: 'SystemList',
   data() {
     return {
+      deleteFlag: false,
       linkDialog: false,
       linkLoading: false,
       linkTypes: [],
@@ -203,6 +205,9 @@ export default {
     this.handleCurrentChange(1)
   },
   methods: {
+    onChange(isDeleted) {
+      this.deleteFlag = isDeleted === 1
+    },
     editLink(id) {
       this.linkDialog = true
       const _this = this
