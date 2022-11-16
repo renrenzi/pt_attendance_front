@@ -84,7 +84,9 @@ export default {
   methods: {
     login() {
       this.loading = true
-      login(qs.stringify({
+      setToken("模拟用户");
+      this.$router.push({path: '/home'});
+      /*login(qs.stringify({
         loginUserName: this.loginForm.username,
         loginPassword: this.loginForm.password
       })).then(res => {
@@ -100,7 +102,7 @@ export default {
           })
           this.loading = false
         }
-      })
+      })*/
     }
   }
 }
@@ -111,9 +113,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 625px;
+  height: 100%;
   width: 100%;
-  background-image: url("https://renrenzi.top/imgs/group1/M00/00/00/rB8AYWI9vm-AD_vUAAFoAcumkJ4421.png");
+  background-image: url("https://haise.oss-cn-fuzhou.aliyuncs.com/carousel1.013f0e2e.png");
   background-size: cover;
   z-index: 100;
 }
