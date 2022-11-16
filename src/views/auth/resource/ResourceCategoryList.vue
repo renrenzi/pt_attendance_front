@@ -2,30 +2,30 @@
   <el-container>
     <el-header height="100px">
       <el-dialog
-          title="添加资源"
-          :visible.sync="isAdd"
-          width="35%"
+        title="添加资源"
+        :visible.sync="isAdd"
+        width="35%"
       >
         <el-row type="flex">
           <el-col span="4">
             分类名称：
           </el-col>
           <el-col span="16">
-            <el-input v-model="requestParams.name"></el-input>
+            <el-input v-model="requestParams.name" />
           </el-col>
         </el-row>
-        <div style="margin: 5px 0;"></div>
+        <div style="margin: 5px 0;" />
         <el-row type="flex">
           <el-col span="4">
             排序：
           </el-col>
           <el-col span="16">
-            <el-input v-model="requestParams.sort"></el-input>
+            <el-input v-model="requestParams.sort" />
           </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-        <el-button @click="isAdd = false">取 消</el-button>
-        <el-button type="primary" @click="saveOrEditResource()">确 定</el-button>
+          <el-button @click="isAdd = false">取 消</el-button>
+          <el-button type="primary" @click="saveOrEditResource()">确 定</el-button>
         </span>
       </el-dialog>
       <el-card class="box-card2">
@@ -36,9 +36,10 @@
             </icon>
           </el-col>
           <el-col :span="2" push="20">
-            <el-button type="primary"
-                       size="small"
-                       @click="isAdd = true, isEdit = false, requestParams = {}"
+            <el-button
+              type="primary"
+              size="small"
+              @click="isAdd = true, isEdit = false, requestParams = {}"
             >
               添加
             </el-button>
@@ -48,86 +49,86 @@
     </el-header>
     <el-main>
       <el-table
-          id="boxbox"
-          ref="multipleTable"
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          v-loading="fullscreenLoading"
-          :border="true"
-          :header-cell-style="{background:'#e1e4e5',color:'#80878f','text-align':'center'}"
-          :cell-style="{'text-align':'center'}"
-          @selection-change="handleSelectionChange">
+        id="boxbox"
+        ref="multipleTable"
+        v-loading="fullscreenLoading"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        :border="true"
+        :header-cell-style="{background:'#e1e4e5',color:'#80878f','text-align':'center'}"
+        :cell-style="{'text-align':'center'}"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column
-            type="selection"
-            width="57">
-        </el-table-column>
+          type="selection"
+          width="57"
+        />
         <el-table-column
-            type="index"
-            label="编号"
-            :index='indexMethod'
-            width="50">
-        </el-table-column>
+          type="index"
+          label="编号"
+          :index="indexMethod"
+          width="50"
+        />
         <el-table-column
-            prop="name"
-            label="分类名称"
-            >
-        </el-table-column>
+          prop="name"
+          label="分类名称"
+        />
         <el-table-column
-            prop="createTime"
-            label="创建时间"
-            width="251">
+          prop="createTime"
+          label="创建时间"
+          width="251"
+        >
           <template slot-scope="scope">{{ scope.row.createTime | moment }}</template>
         </el-table-column>
         <el-table-column
-            prop="sort"
-            label="排序"
-
-        >
-        </el-table-column>
+          prop="sort"
+          label="排序"
+        />
         <el-table-column
-            prop="name"
-            label="操作"
-            show-overflow-tooltip
-            >
+          prop="name"
+          label="操作"
+          show-overflow-tooltip
+        >
           <template slot-scope="scope">
-            <el-button type="primary"
-                       size="small"
-                       icon="el-icon-edit"
-                       @click="gotoEdit(scope.row)"
-            >
-            </el-button>
-            <el-button type="danger"
-                       size="small"
-                       @click="remove(scope.row.id)"
-                       icon="el-icon-delete">
-            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              @click="gotoEdit(scope.row)"
+            />
+            <el-button
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              @click="remove(scope.row.id)"
+            />
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="condition.pageNum"
-          :page-size="condition.pageSize"
-          :page-sizes="[5, 15, 25, 35]"
-          layout="total,sizes,prev, pager, next, jumper"
-          :total="totalSize">
-      </el-pagination>
+        :current-page="condition.pageNum"
+        :page-size="condition.pageSize"
+        :page-sizes="[5, 15, 25, 35]"
+        layout="total,sizes,prev, pager, next, jumper"
+        :total="totalSize"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </el-main>
   </el-container>
 </template>
 
 <script>
-import qs from "qs";
+import qs from 'qs'
 import {
   addResourceCategory,
   deleteResourceCategory, editResourceCategory,
   pageResourceCategory
-} from "../../../api/blogmanager/userResourceCategory";
+} from '../../../api/blogmanager/userResourceCategory'
 
 export default {
-  name: "ResourceCategory",
+  name: 'ResourceCategory',
   data() {
     return {
       resourceCategoryList: [],
@@ -142,83 +143,83 @@ export default {
         pageNum: 1,
         pageSize: 5
       },
-      totalSize: 5,
+      totalSize: 5
     }
   },
-  created() {
-    this.handleCurrentChange(1);
-  },
   computed: {},
+  created() {
+    this.handleCurrentChange(1)
+  },
   methods: {
-    remove(id){
+    remove(id) {
       this.$confirm('此操作将永久删除该资源, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        deleteResourceCategory(qs.stringify({ids: id})).then(res => {
+        deleteResourceCategory(qs.stringify({ ids: id })).then(res => {
           if (res.code === 2000) {
             this.$message({
               type: 'success',
               message: '删除成功!'
-            });
-            this.handleCurrentChange(1);
+            })
+            this.handleCurrentChange(1)
           }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
-    gotoEdit(requestParams){
-      this.requestParams = requestParams;
-      this.isAdd = true;
-      this.isEdit = true;
+    gotoEdit(requestParams) {
+      this.requestParams = requestParams
+      this.isAdd = true
+      this.isEdit = true
     },
-    saveOrEditResource(){
-      if(this.isEdit){
+    saveOrEditResource() {
+      if (this.isEdit) {
         editResourceCategory(qs.stringify({
           id: this.requestParams.id,
           name: this.requestParams.name,
           sort: this.requestParams.sort
-        })).then(res =>{})
-      }else{
-        addResourceCategory(qs.stringify(this.requestParams)).then(res =>{})
+        })).then(res => {})
+      } else {
+        addResourceCategory(qs.stringify(this.requestParams)).then(res => {})
       }
-      this.isAdd = false;
-      this.handleCurrentChange(1);
+      this.isAdd = false
+      this.handleCurrentChange(1)
     },
     indexMethod(index) {
-      return (this.condition.pageNum - 1) * this.condition.pageSize + index + 1;
+      return (this.condition.pageNum - 1) * this.condition.pageSize + index + 1
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      this.multipleSelection = val
     },
     handleSizeChange(val) {
-      this.tableData = [];
-      this.condition.pageSize = val;
-      this.fullscreenLoading = true;
+      this.tableData = []
+      this.condition.pageSize = val
+      this.fullscreenLoading = true
       pageResourceCategory(qs.stringify(this.condition)).then(res => {
-        this.totalSize = res.totalSize;
-        this.tableData = res.data;
+        this.totalSize = res.totalSize
+        this.tableData = res.data
         setTimeout(() => {
-          this.fullscreenLoading = false;
-        }, 500);
+          this.fullscreenLoading = false
+        }, 500)
       })
     },
     handleCurrentChange(val) {
-      this.tableData = [];
-      this.condition.pageNum = val;
-      this.fullscreenLoading = true;
+      this.tableData = []
+      this.condition.pageNum = val
+      this.fullscreenLoading = true
       pageResourceCategory(qs.stringify(this.condition)).then(res => {
-        this.totalSize = res.totalSize;
-        this.tableData = res.data;
+        this.totalSize = res.totalSize
+        this.tableData = res.data
         setTimeout(() => {
-          this.fullscreenLoading = false;
-        }, 500);
+          this.fullscreenLoading = false
+        }, 500)
       })
     }
   }

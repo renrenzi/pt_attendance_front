@@ -5,10 +5,10 @@
         <el-col span="4" style="margin-top: 10px;margin-left: 10px">
           欢迎管理员：
           <span style="color: red">{{ this.$store.state.adminUser.nickName }}</span>
-        </el-col >
+        </el-col>
         <el-col span="4" style="margin-top: 5px;margin-left: -30px">
-          <el-divider direction="vertical"></el-divider>
-          当前时间:<span class="text-24 text-white" v-html="formateTimeStamp(date)"></span>
+          <el-divider direction="vertical" />
+          当前时间:<span class="text-24 text-white" v-html="formateTimeStamp(date)" />
         </el-col>
 
       </el-row>
@@ -75,26 +75,26 @@
     <el-footer style="background: rgb(255,255,255);height: 500px">
       <el-row>
         <span>系统信息&开发团队</span>
-        <el-divider></el-divider>
+        <el-divider />
       </el-row>
       <el-row style="margin-left: 10px">
         <el-table
-            :header-cell-style="{background:'#e1e4e5',color:'#80878f'}"
-            ref="multipleTable"
-            :data="tableData"
-            tooltip-effect="dark"
-            style="width: 95%;margin-left: 10px"
-            :border="true">
+          ref="multipleTable"
+          :header-cell-style="{background:'#e1e4e5',color:'#80878f'}"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 95%;margin-left: 10px"
+          :border="true"
+        >
           <el-table-column
-              prop="configName"
-              label="参数名"
-              width="322">
-          </el-table-column>
+            prop="configName"
+            label="参数名"
+            width="322"
+          />
           <el-table-column
-              prop="configValue"
-              label="参数值"
-              >
-          </el-table-column>
+            prop="configValue"
+            label="参数值"
+          />
         </el-table>
       </el-row>
 
@@ -103,11 +103,11 @@
 </template>
 
 <script>
-import {getConfigList} from "../../api/blogmanager/blogConfig";
-import {getCount} from "../../api/blogmanager/admin";
+import { getConfigList } from '../../api/blogmanager/blogConfig'
+import { getCount } from '../../api/blogmanager/admin'
 
 export default {
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       tableData: [],
@@ -117,66 +117,64 @@ export default {
         category: '',
         comment: '',
         tag: '',
-        link: '',
+        link: ''
       },
-      nowTime: ""
-    };
+      nowTime: ''
+    }
   },
   created() {
     this.loadTime()
-    this.getConfigList();
-    this.getCounts();
+    this.getConfigList()
+    this.getCounts()
+  },
+  mounted() {
+
+  },
+  beforeDestroy() {
+
   },
   methods: {
 
     loadTime() {
-      var _this = this;
+      var _this = this
       setInterval(() => {
-        _this.date += 1000;
-      }, 1000);
-
+        _this.date += 1000
+      }, 1000)
     },
     // 转换时间戳
     formateTimeStamp(time) {
-      var date = new Date(time);
-      var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      var date = new Date(time)
+      var hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
       var minute =
-          date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+          date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
       var second =
-          date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+          date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
       // return year + "年" + month + "月" + day + "日" + hour + ":" + minute + ":" + second;
       return (
-          '<span style="font-size: 22px; text-shadow: 0px 2px 7px rgba(51, 51, 51, 0.6);">' +
+        '<span style="font-size: 22px; text-shadow: 0px 2px 7px rgba(51, 51, 51, 0.6);">' +
           hour +
-          ":" +
-          minute + ":" + second +
-          "</span><br/>"
+          ':' +
+          minute + ':' + second +
+          '</span><br/>'
 
-      );
+      )
     },
 
     getCounts() {
-      const _this = this;
+      const _this = this
       getCount().then(res => {
         if (res.code === 2000) {
-          _this.count = res.data;
+          _this.count = res.data
         }
       })
     },
     getConfigList() {
       getConfigList().then(res => {
         if (res.code === 2000) {
-          this.tableData = res.data;
+          this.tableData = res.data
         }
       })
     }
-  },
-  mounted() {
-
-
-  },
-  beforeDestroy() {
-
   }
 }
 </script>
@@ -289,7 +287,6 @@ export default {
 .address-layout {
   background: rgb(255, 255, 255);
 }
-
 
 .total-layout {
   margin-top: 20px;

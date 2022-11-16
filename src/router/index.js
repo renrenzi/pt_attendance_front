@@ -52,7 +52,7 @@ export const constantRoutes = [
       path: '/home',
       name: 'home',
       component: () => import('@/views/home/AdminHome'),
-      meta: {title: '首页', icon: 'el-icon-s-home'},
+      meta: { title: '首页', icon: 'el-icon-s-home' }
     }]
   },
 
@@ -61,43 +61,42 @@ export const constantRoutes = [
     name: '文章管理',
     redirect: '/blogManager/editBlog',
     component: Layout,
-    meta: {title: '文章管理', icon: 'el-icon-reading'},
+    meta: { title: '文章管理', icon: 'el-icon-reading' },
     children: [
       {
         path: '/editBlog',
         name: '文章编辑',
         component: () => import('@/views/blog/info/EditBlog'),
-        meta: {title: '文章编辑', icon: 'blogEdit'}
+        meta: { title: '文章编辑', icon: 'blogEdit' }
       },
       {
         path: '/blogList',
         name: '文章列表',
         component: () => import('@/views/blog/info/BlogList'),
-        meta: {title: '文章列表', icon: 'blogList'}
+        meta: { title: '文章列表', icon: 'blogList' }
       },
       {
         path: '/commentList',
         name: '评论列表',
         component: () => import('@/views/blog/info/CommentList'),
-        meta: {title: '评论列表', icon: 'comment'}
+        meta: { title: '评论列表', icon: 'comment' }
 
       }
     ]
   },
-
 
   {
     path: '/labelManager',
     name: '标签管理',
     redirect: '/labelManager/labelList',
     component: Layout,
-    meta: {title: '标签管理', icon: 'el-icon-collection-tag'},
+    meta: { title: '标签管理', icon: 'el-icon-collection-tag' },
     children: [
       {
         path: '/labelList',
         name: '标签列表',
         component: () => import('@/views/blog/label/LabelList'),
-        meta: {title: '标签列表', icon: 'tag'}
+        meta: { title: '标签列表', icon: 'tag' }
       }
     ]
   },
@@ -107,13 +106,13 @@ export const constantRoutes = [
     name: '分类管理',
     redirect: '/classifyManager/groupList',
     component: Layout,
-    meta: {title: '分类管理', icon: 'el-icon-s-custom'},
+    meta: { title: '分类管理', icon: 'el-icon-s-custom' },
     children: [
       {
         path: '/groupList',
         name: '分类列表',
         component: () => import('@/views/blog/category/CategoryList'),
-        meta: {title: '分类列表', icon: 'category'}
+        meta: { title: '分类列表', icon: 'category' }
       }
     ]
   },
@@ -122,32 +121,32 @@ export const constantRoutes = [
     name: '权限管理',
     redirect: '/authManager/userManager',
     component: Layout,
-    meta: {title: '权限管理', icon: 'el-icon-share'},
+    meta: { title: '权限管理', icon: 'el-icon-share' },
     children: [
       {
         path: '/userManager',
         name: '用户管理',
         component: () => import('@/views/auth/user/UserList'),
-        meta: {title: '用户管理', icon: 'user'}
+        meta: { title: '用户管理', icon: 'user' }
       },
       {
         path: '/roleManager',
         name: '角色管理',
         component: () => import('@/views/auth/role/RoleList'),
-        meta: {title: '角色管理', icon: 'roleEdit'}
+        meta: { title: '角色管理', icon: 'roleEdit' }
       },
       {
         path: '/resourceManager',
         name: '资源管理',
         component: () => import('@/views/auth/resource/ResourceList'),
-        meta: {title: '资源管理', icon: 'resource'}
+        meta: { title: '资源管理', icon: 'resource' }
       },
       {
         path: '/resourceCategory',
         name: '资源分类管理',
         hidden: true,
         component: () => import('../views/auth/resource/ResourceCategoryList'),
-        meta: {title: '资源分类管理', icon: 'table'}
+        meta: { title: '资源分类管理', icon: 'table' }
       }
     ]
   },
@@ -156,30 +155,30 @@ export const constantRoutes = [
     name: '系统管理',
     redirect: '/systemManager/systemMessage',
     component: Layout,
-    meta: {title: '系统管理', icon: 'el-icon-s-tools'},
+    meta: { title: '系统管理', icon: 'el-icon-s-tools' },
     children: [
       {
         path: '/systemMessage',
         name: '系统信息',
         component: () => import('@/views/system/ConfigList'),
-        meta: {title: '系统信息', icon: 'config'}
+        meta: { title: '系统信息', icon: 'config' }
       },
       {
         path: '/systemList',
         name: '链接列表',
         component: () => import('@/views/system/LinkList'),
-        meta: {title: '链接列表', icon: 'link'}
-      },
+        meta: { title: '链接列表', icon: 'link' }
+      }
     ]
   },
 
   // 404 page must be placed at the end !!!
-  {path: '*', redirect: '/404', hidden: true}
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
 
