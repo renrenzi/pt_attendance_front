@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '微极客',
+  title: '学生考勤管理系统',
 
   /**
    * @type {boolean} true | false
