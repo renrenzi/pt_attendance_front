@@ -21,8 +21,8 @@ const store = new Vuex.Store({
     categoryIcon: 'https://renrenzi.top/imgs/group1/M00/00/00/rB8AYWJUKz2AbqXZAAfLnOwKEG0943.jpg'
   },
   mutations: {
-    adminUser: function (state, adminUser) {
-      state.adminUser = adminUser;
+    adminUser: function(state, adminUser) {
+      state.adminUser = adminUser
     }
   },
   modules: {

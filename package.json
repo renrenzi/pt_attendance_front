@@ -61,5 +61,6 @@
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "start": "set NODE_OPTIONS=--openssl-legacy-provider && cross-env UMI_ENV=dev umi dev"
 }

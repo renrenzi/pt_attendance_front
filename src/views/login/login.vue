@@ -1,74 +1,74 @@
 <template>
-    <div class="login">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-          <h3 class="title">博客后台管理系统</h3>
-          <el-form-item prop="username" >
-            <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-              <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon"/>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              v-model="loginForm.password"
-              type="password"
-              auto-complete="off"
-              placeholder="密码"
-            >
-              <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon"/>
-            </el-input>
-          </el-form-item>
-          <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-          <el-form-item style="width:100%;">
-            <el-button
-              :loading="loading"
-              size="medium"
-              type="primary"
-              style="width:100%;"
-              @click="login"
-            >
-              <span v-if="!loading">登 录</span>
-              <span v-else>登 录 中...</span>
-            </el-button>
-            <div style="float: right;" v-if="register">
-              <router-link class="link-type" :to="'/register'">立即注册</router-link>
-            </div>
-          </el-form-item>
-        </el-form>
-        <!--  底部  -->
-        <div class="el-login-footer">
-          <span>Copyright © 2021-2022 RenRenZi All Rights Reserved.</span>
-          <el-link href="https://beian.miit.gov.cn/#/Integrated/recordQuery">闽ICP备2022003846号</el-link>
-          Powered by <el-link href="#" target="_blank">任人子</el-link>
+  <div class="login">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
+      <h3 class="title">博客后台管理系统</h3>
+      <el-form-item prop="username">
+        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="密码"
+        >
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+        </el-input>
+      </el-form-item>
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      <el-form-item style="width:100%;">
+        <el-button
+          :loading="loading"
+          size="medium"
+          type="primary"
+          style="width:100%;"
+          @click="login"
+        >
+          <span v-if="!loading">登 录</span>
+          <span v-else>登 录 中...</span>
+        </el-button>
+        <div v-if="register" style="float: right;">
+          <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
+      </el-form-item>
+    </el-form>
+    <!--  底部  -->
+    <div class="el-login-footer">
+      <span>Copyright © 2021-2022 RenRenZi All Rights Reserved.</span>
+      <el-link href="https://beian.miit.gov.cn/#/Integrated/recordQuery">闽ICP备2022003846号</el-link>
+      Powered by <el-link href="#" target="_blank">任人子</el-link>
     </div>
+  </div>
 
 </template>
 
 <script>
-import {login} from "../../api/blogmanager/admin";
-import qs from "qs";
-import {setToken, setUser} from "@/utils/auth";
+import { login } from '../../api/blogmanager/admin'
+import qs from 'qs'
+import { setToken, setUser } from '@/utils/auth'
 
 export default {
-  name: "login",
+  name: 'Login',
   data() {
     return {
-      codeUrl: "",
-      cookiePassword: "",
+      codeUrl: '',
+      cookiePassword: '',
       loginForm: {
-        username: "test",
-        password: "123456",
+        username: 'test',
+        password: '123456',
         rememberMe: false,
-        code: "",
-        uuid: ""
+        code: '',
+        uuid: ''
       },
       loginRules: {
         username: [
-          {required: true, trigger: "blur", message: "请输入您的账号"}
+          { required: true, trigger: 'blur', message: '请输入您的账号' }
         ],
         password: [
-          {required: true, trigger: "blur", message: "请输入您的密码"}
-        ],
+          { required: true, trigger: 'blur', message: '请输入您的密码' }
+        ]
       },
       loading: false,
       // 验证码开关
@@ -76,29 +76,29 @@ export default {
       // 注册开关
       register: false,
       redirect: undefined
-    };
+    }
   },
   created() {
 
   },
   methods: {
     login() {
-      this.loading = true;
+      this.loading = true
       login(qs.stringify({
         loginUserName: this.loginForm.username,
         loginPassword: this.loginForm.password
       })).then(res => {
         if (res.code === 2000) {
-          this.$store.state.adminUser = res.data.adminUser;
-          this.$store.state.imgUrl = res.data.imgUrl;
-          setToken(res.data.token);
-          this.$router.push({path: '/home'})
-        }else{
+          this.$store.state.adminUser = res.data.adminUser
+          this.$store.state.imgUrl = res.data.imgUrl
+          setToken(res.data.token)
+          this.$router.push({ path: '/home' })
+        } else {
           this.$message({
-          type: 'error',
-          message: '账户名或密码错误'
-        });
-          this.loading = false;
+            type: 'error',
+            message: '账户名或密码错误'
+          })
+          this.loading = false
         }
       })
     }
@@ -136,7 +136,6 @@ img {
   cursor: pointer;
   vertical-align: middle;
 }
-
 
 .el-login-footer {
   height: 40px;
