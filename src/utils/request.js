@@ -1,23 +1,23 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import {getToken, removeToken, setToken} from '@/utils/auth'
-//const baseURL = 'http://120.39.217.37:2236/api'
+import { getToken, removeToken, setToken } from '@/utils/auth'
+// const baseURL = 'http://120.39.217.37:2236/api'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  //baseURL: baseURL, // url = base url + request url
+  // baseURL: baseURL, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 5000 // request timeout
 
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.headers.Authorization = getToken();
-/*
+    config.headers.Authorization = getToken()
+    /*
     config.url = config.url +"?Authorization="+ getToken()*/
     return config
   },
@@ -40,12 +40,12 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
       // 该用户未登录
-      if(res.code === 4002){
-        removeToken();
+      if (res.code === 4002) {
+        removeToken()
         location.reload()
       }
       // 权限不足
-      if(res.code === 4003){
+      if (res.code === 4003) {
 
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;

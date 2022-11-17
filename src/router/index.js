@@ -57,29 +57,29 @@ export const constantRoutes = [
   },
 
   {
-    path: '/blogManager',
-    name: '文章管理',
-    redirect: '/blogManager/editBlog',
+    path: '/courseManagement',
+    name: '课程管理',
+    redirect: '/courseManagement/editBlog',
     component: Layout,
-    meta: { title: '文章管理', icon: 'el-icon-reading' },
+    meta: { title: '课程管理', icon: 'el-icon-reading' },
     children: [
       {
-        path: '/editBlog',
-        name: '文章编辑',
-        component: () => import('@/views/blog/info/EditBlog'),
-        meta: { title: '文章编辑', icon: 'blogEdit' }
+        path: '/courseList',
+        name: '课程列表',
+        component: () => import('@/views/course/CourseList'),
+        meta: { title: '课程列表', icon: 'blogEdit' }
       },
       {
         path: '/blogList',
-        name: '文章列表',
+        name: '专业列表',
         component: () => import('@/views/blog/info/BlogList'),
-        meta: { title: '文章列表', icon: 'blogList' }
+        meta: { title: '专业列表', icon: 'blogList' }
       },
       {
         path: '/commentList',
-        name: '评论列表',
+        name: '选课列表',
         component: () => import('@/views/blog/info/CommentList'),
-        meta: { title: '评论列表', icon: 'comment' }
+        meta: { title: '选课列表', icon: 'comment' }
 
       }
     ]
@@ -87,16 +87,22 @@ export const constantRoutes = [
 
   {
     path: '/labelManager',
-    name: '标签管理',
+    name: '考勤管理',
     redirect: '/labelManager/labelList',
     component: Layout,
-    meta: { title: '标签管理', icon: 'el-icon-collection-tag' },
+    meta: { title: '考勤管理', icon: 'el-icon-collection-tag' },
     children: [
       {
         path: '/labelList',
-        name: '标签列表',
+        name: '考勤列表',
         component: () => import('@/views/blog/label/LabelList'),
-        meta: { title: '标签列表', icon: 'tag' }
+        meta: { title: '考勤列表', icon: 'tag' }
+      },
+      {
+        path: '/labelList',
+        name: '请假列表',
+        component: () => import('@/views/blog/label/LabelList'),
+        meta: { title: '请假列表', icon: 'tag' }
       }
     ]
   },
@@ -110,9 +116,15 @@ export const constantRoutes = [
     children: [
       {
         path: '/groupList',
-        name: '分类列表',
+        name: '学生列表',
         component: () => import('@/views/blog/category/CategoryList'),
-        meta: { title: '分类列表', icon: 'category' }
+        meta: { title: '学生列表', icon: 'category' }
+      },
+      {
+        path: '/groupList',
+        name: '教师列表',
+        component: () => import('@/views/blog/category/CategoryList'),
+        meta: { title: '教师列表', icon: 'category' }
       }
     ]
   },
