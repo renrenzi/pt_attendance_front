@@ -9,8 +9,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    settings:{
-      sidebarLogo: ""
+    settings: {
+      sidebarLogo: ''
     },
     isOpen: false,
     aboutId: 33,
