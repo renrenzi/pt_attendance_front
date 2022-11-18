@@ -16,7 +16,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.headers.Authorization = getToken()
+    // config.headers.Authorization = getToken()
     /*
     config.url = config.url +"?Authorization="+ getToken()*/
     return config

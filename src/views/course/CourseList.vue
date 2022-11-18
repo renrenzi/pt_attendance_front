@@ -63,30 +63,36 @@
           width="59"
         />
         <el-table-column
-          prop="blogTitle"
-          label="博客标题"
+          prop="name"
+          label="课程名称"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="teacherId"
+          label="授课教师"
+        />
+        <el-table-column
+          prop="courseDate"
+          label="课程时间"
           width="200"
         >
-          <!--          <template slot-scope="scope">{{ scope.row.date }}</template>-->
+          <template slot-scope="scope">
+            {{ scope.row.courseDate | moment }}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="blogCategoryName"
-          label="博客分类"
+          prop="selectedNum"
+          label="选课人数"
         />
         <el-table-column
-          prop="blogTags"
-          label="博客标签"
-        />
-        <el-table-column
-          prop="blogViews"
-          label="阅读量"
-        />
-        <el-table-column
-          prop="updateTime"
-          label="最后修改时间"
+          prop="maxNum"
+          label="最多选课人数"
         >
-          <template slot-scope="scope">{{ scope.row.updateTime | moment }}</template>
         </el-table-column>
+        <el-table-column
+          prop="info"
+          label="课程详情"
+        />
         <el-table-column
           label="文章状态"
         >
@@ -173,9 +179,10 @@
 </template>
 
 <script>
-import { clearBlog, deleteBlog, pageBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
+import { clearBlog, deleteBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
 import { getBlogCategoryList } from '@/api/blogmanager/blogCategory'
 import qs from 'qs'
+import { pageCourseList } from '@/api/blogmanager/course'
 
 export default {
   name: 'CourseList',
@@ -201,7 +208,6 @@ export default {
   },
   created() {
     this.handleCurrentChange(1)
-    this.getBlogCategory()
   },
   methods: {
     restoreBlog(blogId) {
@@ -375,18 +381,18 @@ export default {
     handleSizeChange(val) {
       const _this = this
       this.condition.pageSize = val
-      pageBlog(qs.stringify(this.condition)).then(res => {
+      pageCourseList(this.condition).then(res => {
         _this.loading = false
-        this.totalSize = res.totalSize
-        this.tableData = res.data
+        this.totalSize = res.data.totalSize
+        this.tableData = res.data.courseList
       })
     },
     handleCurrentChange(val) {
       const _this = this
       this.condition.pageNum = val
-      pageBlog(qs.stringify(this.condition)).then(res => {
-        this.totalSize = res.totalSize
-        this.tableData = res.data
+      pageCourseList(this.condition).then(res => {
+        this.totalSize = res.data.totalSize
+        this.tableData = res.data.courseList
         _this.loading = false
       })
     }

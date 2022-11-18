@@ -34,7 +34,7 @@ import '@/permission' // permission control
   mockXHR()
 }*/
 Vue.filter('moment', function(value, formatString) {
-  formatString = formatString || 'YYYY-MM-DD'
+  formatString = formatString || 'YYYY-MM-DD HH:mm:ss'
   return moment(value).format(formatString)
 })
 Vue.use(mavonEditor)
