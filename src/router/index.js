@@ -70,15 +70,15 @@ export const constantRoutes = [
         meta: { title: '课程列表', icon: 'blogEdit' }
       },
       {
-        path: '/blogList',
+        path: '/clazzList',
         name: '专业列表',
-        component: () => import('@/views/blog/info/BlogList'),
+        component: () => import('@/views/course/ClazzList'),
         meta: { title: '专业列表', icon: 'blogList' }
       },
       {
-        path: '/commentList',
+        path: '/selectedCourseList',
         name: '选课列表',
-        component: () => import('@/views/blog/info/CommentList'),
+        component: () => import('@/views/course/SelectedCourseList'),
         meta: { title: '选课列表', icon: 'comment' }
 
       }
@@ -86,16 +86,16 @@ export const constantRoutes = [
   },
 
   {
-    path: '/labelManager',
+    path: '/attendance',
     name: '考勤管理',
-    redirect: '/labelManager/labelList',
+    redirect: '/attendance/attendanceList',
     component: Layout,
     meta: { title: '考勤管理', icon: 'el-icon-collection-tag' },
     children: [
       {
-        path: '/labelList',
+        path: '/attendanceList',
         name: '考勤列表',
-        component: () => import('@/views/blog/label/LabelList'),
+        component: () => import('@/views/attendance/AttendanceList'),
         meta: { title: '考勤列表', icon: 'tag' }
       },
       {

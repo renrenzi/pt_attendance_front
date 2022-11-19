@@ -64,34 +64,13 @@
         />
         <el-table-column
           prop="name"
-          label="课程名称"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="teacherId"
-          label="授课教师"
-        />
-        <el-table-column
-          prop="courseDate"
-          label="课程时间"
+          label="专业名称"
           width="200"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.courseDate | moment }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="selectedNum"
-          label="选课人数"
-        />
-        <el-table-column
-          prop="maxNum"
-          label="最多选课人数"
         >
         </el-table-column>
         <el-table-column
           prop="info"
-          label="课程详情"
+          label="专业详情"
         />
         <el-table-column
           label="文章状态"
@@ -179,13 +158,13 @@
 </template>
 
 <script>
-import { clearBlog, deleteBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
+import { clearBlog, deleteBlog, pageBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
 import { getBlogCategoryList } from '@/api/blogmanager/blogCategory'
 import qs from 'qs'
-import { pageCourseList } from '@/api/attendance/course'
+import {pageClazzList} from "@/api/attendance/clazz";
 
 export default {
-  name: 'CourseList',
+  name: 'ClazzList',
   data() {
     return {
       fullscreenLoading: false,
@@ -332,7 +311,7 @@ export default {
         deleteBlog(qs.stringify({
           blogId: blogId
         })).then(res => {
-          if (res.code === 2000) {
+          if (res.code == 2000) {
             _this.handleCurrentChange(1)
             setTimeout(() => {
               this.fullscreenLoading = false
@@ -381,18 +360,18 @@ export default {
     handleSizeChange(val) {
       const _this = this
       this.condition.pageSize = val
-      pageCourseList(this.condition).then(res => {
-        _this.loading = false
+      pageClazzList(this.condition).then(res => {
         this.totalSize = res.data.totalSize
-        this.tableData = res.data.courseList
+        this.tableData = res.data.clazzList
+        _this.loading = false
       })
     },
     handleCurrentChange(val) {
       const _this = this
       this.condition.pageNum = val
-      pageCourseList(this.condition).then(res => {
+      pageClazzList(this.condition).then(res => {
         this.totalSize = res.data.totalSize
-        this.tableData = res.data.courseList
+        this.tableData = res.data.clazzList
         _this.loading = false
       })
     }
