@@ -99,9 +99,9 @@ export const constantRoutes = [
         meta: { title: '考勤列表', icon: 'tag' }
       },
       {
-        path: '/labelList',
+        path: '/leaveList',
         name: '请假列表',
-        component: () => import('@/views/blog/label/LabelList'),
+        component: () => import('@/views/attendance/LeaveList'),
         meta: { title: '请假列表', icon: 'tag' }
       }
     ]

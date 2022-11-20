@@ -79,26 +79,26 @@
         />
         <el-table-column
           prop="studentId"
-          label="学生Id"
-          width="268"
+          label="学生id"
         />
         <el-table-column
-          prop="courseId"
-          label="课程Id"
-          width="268"
+          prop="info"
+          label="请假详情"
         />
         <el-table-column
-          prop="type"
-          label="考勤状态"
-          width="268"
+          prop="status"
+          label="请假状态"
         />
         <el-table-column
-          prop="date"
-          label="考勤时间"
-          width="268"
+          prop="remark"
+          label="请假备注"
+        />
+        <el-table-column
+          prop="createDate"
+          label="请假时间"
         >
           <template slot-scope="scope">
-            {{ scope.row.date | moment }}
+            {{ scope.row.createDate | moment }}
           </template>
         </el-table-column>
         <el-table-column
@@ -157,8 +157,8 @@
 </template>
 
 <script>
-import qs from 'qs'
-import {pageAttendanceList} from "@/api/attendance/attendance";
+
+import {pageLeaveList} from "@/api/attendance/leave";
 
 export default {
   name: 'LabelList',
@@ -284,9 +284,9 @@ export default {
       this.condition.pageSize = val
       const _this = this
       this.fullscreenLoading = true
-      pageAttendanceList(this.condition).then(res => {
+      pageLeaveList(this.condition).then(res => {
         _this.totalSize = res.totalSize
-        _this.tableData = res.attendanceList
+        _this.tableData = res.leaveList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
@@ -296,9 +296,9 @@ export default {
       this.condition.pageNum = val
       const _this = this
       this.fullscreenLoading = true
-      pageAttendanceList(this.condition).then(res => {
+      pageLeaveList(this.condition).then(res => {
         _this.totalSize = res.totalSize
-        _this.tableData = res.attendanceList
+        _this.tableData = res.leaveList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
