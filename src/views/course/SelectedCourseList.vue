@@ -150,7 +150,7 @@
 
 <script>
 import qs from 'qs'
-import {pageSelectedCourseList} from "@/api/attendance/selectedCourse";
+import { pageSelectedCourseList } from '@/api/attendance/selectedCourse'
 
 export default {
   name: 'CommentList',

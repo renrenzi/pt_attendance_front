@@ -146,20 +146,20 @@
           width="57"
         />
         <el-table-column
-          type="index"
+          type="id"
           label="编号"
           width="50"
         />
         <el-table-column
-          prop="loginUserName"
+          prop="username"
           label="用户名"
         />
         <el-table-column
-          prop="nickName"
-          label="昵称"
+          prop="clazzId"
+          label="专业"
         />
         <el-table-column
-          prop="imgUrl"
+          prop="createDate"
           label="头像"
         >
           <template slot-scope="scope">
@@ -196,7 +196,7 @@
           <template slot-scope="scope">
             <el-button
               size="small"
-              @click="handleAllocateUser(scope.row.adminUserId)"
+              @click="handleAllocateUser(scope.row.id)"
             >
               分配角色
             </el-button>
@@ -231,9 +231,11 @@
 
 <script>
 import qs from 'qs'
-import { deleteUsers, editUserInfo, pageUser, registerUser } from '../../../api/blogmanager/admin'
-import { pageRole } from '../../../api/blogmanager/userRole'
-import { allocateRole, getRoleListById } from '../../../api/blogmanager/userRoleRelation'
+import { deleteUsers, editUserInfo, pageUser, registerUser } from '@/api/blogmanager/admin'
+import { pageRole } from '@/api/blogmanager/userRole'
+import { allocateRole, getRoleListById } from '@/api/blogmanager/userRoleRelation'
+import { pageTeacherList } from '@/api/attendance/teacher'
+import { pageStudentList } from '@/api/attendance/student'
 
 export default {
   name: 'UserManager',
@@ -283,11 +285,11 @@ export default {
         }
       })
     },
-    handleAllocateUser(adminUserId) {
+    handleAllocateUser(id) {
       this.isDivide = true
-      this.adminUserId = adminUserId
+      this.adminUserId = id
       getRoleListById(qs.stringify({
-        adminId: adminUserId
+        adminId: id
       })).then(res => {
         const list = res.data
         this.requestIds = new Set()
@@ -374,9 +376,9 @@ export default {
     handleSizeChange(val) {
       this.condition.pageSize = val
       this.fullscreenLoading = true
-      pageUser(qs.stringify(this.condition)).then(res => {
+      pageTeacherList(this.condition).then(res => {
         this.totalSize = res.totalSize
-        this.tableData = res.data
+        this.tableData = res.teacherList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
@@ -385,9 +387,11 @@ export default {
     handleCurrentChange(val) {
       this.condition.pageNum = val
       this.fullscreenLoading = true
-      pageUser(qs.stringify(this.condition)).then(res => {
+      pageTeacherList(this.condition).then(res => {
+        console.info(res)
+
         this.totalSize = res.totalSize
-        this.tableData = res.data
+        this.tableData = res.teacherList
       })
       setTimeout(() => {
         this.fullscreenLoading = false
