@@ -278,8 +278,8 @@ export default {
       this.fullscreenLoading = true
       const _this = this
       pageSelectedCourseList(this.condition).then(res => {
-        _this.totalSize = res.data.totalSize
-        _this.tableData = res.data.selectedCourseList
+        _this.totalSize = res.totalSize
+        _this.tableData = res.selectedCourseList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
@@ -291,8 +291,8 @@ export default {
       const _this = this
       pageSelectedCourseList(this.condition).then(res => {
         console.info(res)
-        _this.totalSize = res.data.totalSize
-        _this.tableData = res.data.selectedCourseList
+        _this.totalSize = res.totalSize
+        _this.tableData = res.selectedCourseList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)

@@ -115,15 +115,15 @@ export const constantRoutes = [
     meta: { title: '分类管理', icon: 'el-icon-s-custom' },
     children: [
       {
-        path: '/groupList',
+        path: '/studentList',
         name: '学生列表',
-        component: () => import('@/views/blog/category/CategoryList'),
+        component: () => import('@/views/user/StudentList'),
         meta: { title: '学生列表', icon: 'category' }
       },
       {
-        path: '/groupList',
+        path: '/teacherList',
         name: '教师列表',
-        component: () => import('@/views/blog/category/CategoryList'),
+        component: () => import('@/views/user/TeacherList'),
         meta: { title: '教师列表', icon: 'category' }
       }
     ]

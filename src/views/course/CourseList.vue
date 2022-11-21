@@ -383,16 +383,16 @@ export default {
       this.condition.pageSize = val
       pageCourseList(this.condition).then(res => {
         _this.loading = false
-        this.totalSize = res.data.totalSize
-        this.tableData = res.data.courseList
+        this.totalSize = res.totalSize
+        this.tableData = res.courseList
       })
     },
     handleCurrentChange(val) {
       const _this = this
       this.condition.pageNum = val
       pageCourseList(this.condition).then(res => {
-        this.totalSize = res.data.totalSize
-        this.tableData = res.data.courseList
+        this.totalSize = res.totalSize
+        this.tableData = res.courseList
         _this.loading = false
       })
     }

@@ -361,8 +361,8 @@ export default {
       const _this = this
       this.condition.pageSize = val
       pageClazzList(this.condition).then(res => {
-        this.totalSize = res.data.totalSize
-        this.tableData = res.data.clazzList
+        this.totalSize = res.totalSize
+        this.tableData = res.clazzList
         _this.loading = false
       })
     },
@@ -370,8 +370,8 @@ export default {
       const _this = this
       this.condition.pageNum = val
       pageClazzList(this.condition).then(res => {
-        this.totalSize = res.data.totalSize
-        this.tableData = res.data.clazzList
+        this.totalSize = res.totalSize
+        this.tableData = res.clazzList
         _this.loading = false
       })
     }
