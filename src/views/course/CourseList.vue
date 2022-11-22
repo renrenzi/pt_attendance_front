@@ -5,31 +5,15 @@
         <el-row :gutter="10">
           <el-col :span="4">
             <el-input
-              v-model="condition.blogTitle"
-              placeholder="输入文章标题"
+              v-model="condition.course.name"
+              placeholder="请输入课程名称"
             />
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="condition.blogCategoryId" placeholder="请选择文章分类">
-              <el-option
-                v-model="categoryEmpty"
-                label="----- 不选 -----"
-              />
-              <el-option
-                v-for="item in categoryList"
-                :key="item.categoryId"
-                :label="item.categoryName"
-                :value="item.categoryId"
-              />
-            </el-select>
           </el-col>
           <el-col :span="4">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
-
-              :loading="loding"
               @click="searchPage"
             />
 
@@ -65,10 +49,9 @@
         <el-table-column
           prop="name"
           label="课程名称"
-        >
-        </el-table-column>
+        />
         <el-table-column
-          prop="teacherId"
+          prop="teacherName"
           label="授课教师"
         />
         <el-table-column
@@ -87,44 +70,7 @@
         <el-table-column
           prop="maxNum"
           label="最多选课人数"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="info"
-          label="课程详情"
         />
-        <el-table-column
-          label="文章状态"
-        >
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.blogStatus === 1 ? true :false"
-              v-loading.fullscreen.lock="fullscreenLoading"
-              class="switch"
-              active-text="发布"
-              inactive-text="草稿"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @click.native="editBlogStatus(scope.row.blogId,scope.row.blogStatus)"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="评论"
-        >
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.enableComment == 1 ? true :false"
-              class="switch"
-              active-text="允许评论"
-              inactive-text="禁止评论"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @click.native="editEnableComment(scope.row.blogId,scope.row.enableComment)"
-            />
-          </template>
-        </el-table-column>
         <el-table-column
           prop="name"
           label="操作"
@@ -135,32 +81,16 @@
 
             <el-button
               size="small"
-              @click="editBlog(scope.row.blogId)"
+              @click="editBlog(scope.row.id)"
             >
               编辑
             </el-button>
             <el-button
-              v-if="scope.row.isDeleted === 0"
               type="danger"
               size="small"
-              @click="deleteBlog(scope.row.blogId)"
+              @click="deleteCourse(scope.row.id)"
             >
               删除
-            </el-button>
-            <el-button
-              v-if="scope.row.isDeleted === 1"
-              type="warning"
-              size="small"
-              @click="restoreBlog(scope.row.blogId)"
-            >
-              还原
-            </el-button>
-            <el-button
-              type="danger"
-              size="small"
-              @click="clearBlog(scope.row.blogId)"
-            >
-              清除
             </el-button>
           </template>
         </el-table-column>
@@ -179,108 +109,27 @@
 </template>
 
 <script>
-import { clearBlog, deleteBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
-import { getBlogCategoryList } from '@/api/blogmanager/blogCategory'
-import qs from 'qs'
-import { pageCourseList } from '@/api/attendance/course'
+import { batchDeleteCourse, pageCourseList } from '@/api/attendance/course'
 
 export default {
   name: 'CourseList',
   data() {
     return {
-      fullscreenLoading: false,
       loading: true,
       tableData: [],
       condition: {
         pageNum: 0,
         pageSize: 5,
-        blogTitle: null,
-        blogCategoryId: null
+        course: {}
       },
       totalSize: 10,
-      multipleSelection: [],
-      value: '',
-      loding: false,
-      blogCategoryId: '',
-      categoryList: [],
-      categoryEmpty: null
+      multipleSelection: []
     }
   },
   created() {
     this.handleCurrentChange(1)
   },
   methods: {
-    restoreBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将还原该文章, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        _this.fullscreenLoading = true
-        restoreBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code === 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '还原成功!'
-              })
-            }, 500)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消还原'
-        })
-      })
-    },
-    editEnableComment(id, enableComment) {
-      enableComment = enableComment === 0 ? 1 : 0
-      const _this = this
-      this.fullscreenLoading = true
-      updateBlogStatus(qs.stringify({
-        blogId: id,
-        enableComment: enableComment
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.handleCurrentChange(1)
-          setTimeout(() => {
-            this.fullscreenLoading = false
-            this.$message({
-              message: '修改成功',
-              center: true,
-              type: 'success'
-            })
-          }, 500)
-        }
-      })
-    },
-    editBlogStatus(id, blogStatus) {
-      this.fullscreenLoading = true
-      blogStatus = blogStatus === 0 ? 1 : 0
-      const _this = this
-      updateBlogStatus(qs.stringify({
-        blogId: id, blogStatus: blogStatus
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.handleCurrentChange(1)
-          setTimeout(() => {
-            this.fullscreenLoading = false
-            this.$message({
-              message: '修改成功',
-              center: true,
-              type: 'success'
-            })
-          }, 500)
-        }
-      })
-    },
     editBlog(blogId) {
       this.$router.push(
         {
@@ -290,58 +139,23 @@ export default {
           }
         })
     },
-    clearBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将请清除数据库, 是否继续?', '提示', {
+    deleteCourse(id) {
+      this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        _this.fullscreenLoading = true
-        clearBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code === 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '清除数据库成功!'
-              })
-            }, 500)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消清除数据库'
-        })
-      })
-    },
-    deleteBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        _this.fullscreenLoading = true
-        deleteBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code === 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            }, 500)
-          }
+        this.loading = true
+        batchDeleteCourse([id]).then(res => {
+          this.handleCurrentChange(1)
+          setTimeout(() => {
+            this.loading = false
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }, 500)
         })
       }).catch(() => {
         this.$message({
@@ -352,19 +166,11 @@ export default {
     },
     refreshPage() {
       this.loading = true
-      this.condition.blogTitle = null
-      this.condition.blogCategoryId = null
+      this.condition.course = {}
       this.handleCurrentChange(1)
     },
     searchPage() {
-      this.loding = true
       this.handleCurrentChange(1)
-      this.loding = false
-    },
-    getBlogCategory() {
-      getBlogCategoryList().then(res => {
-        this.categoryList = res
-      })
     },
     toggleSelection(rows) {
       if (rows) {
@@ -379,21 +185,19 @@ export default {
       this.multipleSelection = val
     },
     handleSizeChange(val) {
-      const _this = this
       this.condition.pageSize = val
       pageCourseList(this.condition).then(res => {
-        _this.loading = false
+        this.loading = false
         this.totalSize = res.totalSize
-        this.tableData = res.courseList
+        this.tableData = res.pageCourseDtoList
       })
     },
     handleCurrentChange(val) {
-      const _this = this
       this.condition.pageNum = val
       pageCourseList(this.condition).then(res => {
         this.totalSize = res.totalSize
-        this.tableData = res.courseList
-        _this.loading = false
+        this.tableData = res.pageCourseDtoList
+        this.loading = false
       })
     }
   }

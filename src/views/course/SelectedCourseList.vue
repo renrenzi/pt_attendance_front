@@ -276,10 +276,9 @@ export default {
     handleSizeChange(val) {
       this.condition.pageSize = val
       this.fullscreenLoading = true
-      const _this = this
       pageSelectedCourseList(this.condition).then(res => {
-        _this.totalSize = res.totalSize
-        _this.tableData = res.selectedCourseList
+        this.totalSize = res.totalSize
+        this.tableData = res.selectedCourseList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
@@ -288,11 +287,9 @@ export default {
     handleCurrentChange(val) {
       this.condition.pageNum = val
       this.fullscreenLoading = true
-      const _this = this
       pageSelectedCourseList(this.condition).then(res => {
-        console.info(res)
-        _this.totalSize = res.totalSize
-        _this.tableData = res.selectedCourseList
+        this.totalSize = res.totalSize
+        this.tableData = res.selectedCourseList
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)

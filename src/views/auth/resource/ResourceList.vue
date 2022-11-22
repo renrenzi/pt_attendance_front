@@ -265,13 +265,11 @@ export default {
         center: true
       }).then(() => {
         deleteResources(qs.stringify({ ids: id })).then(res => {
-          if (res.code === 2000) {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            this.handleCurrentChange(1)
-          }
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.searchResource()
         })
       }).catch(() => {
         this.$message({
@@ -298,7 +296,7 @@ export default {
         addResource(qs.stringify(this.requestParams)).then(res => {})
       }
       this.isAdd = false
-      this.handleCurrentChange(1)
+      this.searchResource()
     },
     getAllResourceCateList() {
       pageResourceCategory(qs.stringify({
