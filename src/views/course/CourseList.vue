@@ -26,6 +26,13 @@
 
               @click="refreshPage"
             />
+            <el-button
+              type="primary"
+              size="small"
+              @click="isVisible = true, course = {}"
+            >
+              新增
+            </el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -81,7 +88,7 @@
 
             <el-button
               size="small"
-              @click="editBlog(scope.row.id)"
+              @click="editCourse(scope.row)"
             >
               编辑
             </el-button>
@@ -105,39 +112,106 @@
         @current-change="handleCurrentChange"
       />
     </el-main>
+    <el-dialog
+      title="课程管理"
+      :visible.sync="isVisible"
+      width="40%"
+    >
+      <el-row>
+        <el-col span="4">
+          课程名称：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.name" />
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          授课教师：
+        </el-col>
+        <el-col span="16">
+          <el-select v-model="course.teacherId" placeholder="请选择授課教師">
+            <el-option
+              v-for="item in teacherList"
+              :key="item.id"
+              :label="item.username"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          选课人数：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.selectedNum" />
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          最多选课人数：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.maxNum" />
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isVisible = false">取 消</el-button>
+        <el-button type="primary" @click="manageCourse()">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
-import { batchDeleteCourse, pageCourseList } from '@/api/attendance/course'
+import { batchDeleteCourse, editCourseDetail, pageCourseList } from '@/api/attendance/course'
+import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
+import { pageTeacherList } from '@/api/attendance/teacher'
 
 export default {
   name: 'CourseList',
   data() {
     return {
+      isVisible: false,
       loading: true,
       tableData: [],
+      teacherList: [],
       condition: {
         pageNum: 0,
         pageSize: 5,
         course: {}
       },
+      course: {},
       totalSize: 10,
       multipleSelection: []
     }
   },
   created() {
     this.handleCurrentChange(1)
+    this.getTeacherList()
   },
   methods: {
-    editBlog(blogId) {
-      this.$router.push(
-        {
-          path: '/editBlog',
-          query: {
-            blogId: blogId
-          }
-        })
+    getTeacherList() {
+      pageTeacherList({
+        pageNum: 1,
+        pageSize: 1000
+      }).then(res => {
+        this.teacherList = res.teacherList
+      })
+    },
+    manageCourse() {
+      editCourseDetail({
+        'course': this.course
+      }).then(res => {
+        this.handleCurrentChange(1)
+        this.isVisible = false
+        assertSuccessMessage('修改成功')
+      })
+    },
+    editCourse(course) {
+      this.isVisible = true
+      this.course = course
     },
     deleteCourse(id) {
       this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
@@ -149,19 +223,10 @@ export default {
         this.loading = true
         batchDeleteCourse([id]).then(res => {
           this.handleCurrentChange(1)
-          setTimeout(() => {
-            this.loading = false
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          }, 500)
+          assertSuccessMessage('删除成功!')
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+        assertNormalMessage('已取消删除')
       })
     },
     refreshPage() {
@@ -209,5 +274,8 @@ export default {
   height: 100px;
   margin-top: 10px;
   width: 95%;
+}
+.el-row{
+  margin-top: 10px;
 }
 </style>

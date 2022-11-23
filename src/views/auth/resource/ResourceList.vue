@@ -224,17 +224,14 @@ export default {
       multipleSelection: [],
       condition: {
         pageNum: 1,
-        pageSize: 10,
-        name: null,
-        url: null,
-        categoryId: null
+        pageSize: 10
       },
       totalSize: 10
     }
   },
   computed: {},
   created() {
-    this.searchResource()
+    this.handleCurrentChange(1)
     this.getAllResourceCateList()
   },
   methods: {
@@ -253,8 +250,9 @@ export default {
         url: this.resource.url,
         categoryId: this.resource.categoryId
       })).then(res => {
-        this.clear()
+        // this.clear()
         this.tableData = res.data
+        this.totalSize = res.totalSize
       })
     },
     remove(id) {
@@ -329,6 +327,7 @@ export default {
       this.condition.pageNum = val
       this.fullscreenLoading = true
       pageResource(qs.stringify(this.condition)).then(res => {
+        console.info(res)
         this.totalSize = res.totalSize
         this.tableData = res.data
         setTimeout(() => {

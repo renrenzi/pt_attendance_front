@@ -2,6 +2,15 @@ import service from '@/utils/request'
 
 const PREFIX = '/course'
 
+export const editCourseDetail = (searchParam) => {
+  return service.post(PREFIX + '/edit/course/detail', searchParam)
+    .then(res => {
+      return res.data
+    })
+    .catch(res => {
+      return false
+    })
+}
 export const batchDeleteCourse = (searchParam) => {
   return service.post(PREFIX + '/batch/delete/course', searchParam)
     .then(res => {
