@@ -154,6 +154,55 @@
         @current-change="handleCurrentChange"
       />
     </el-main>
+<!--    <el-dialog
+      title="课程管理"
+      :visible.sync="isVisible"
+      width="40%"
+    >
+      <el-row>
+        <el-col span="4">
+          课程名称：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.name" />
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          授课教师：
+        </el-col>
+        <el-col span="16">
+          <el-select v-model="course.teacherId" placeholder="请选择授課教師">
+            <el-option
+              v-for="item in teacherList"
+              :key="item.id"
+              :label="item.username"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          选课人数：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.selectedNum" />
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col span="4">
+          最多选课人数：
+        </el-col>
+        <el-col span="16">
+          <el-input v-model="course.maxNum" />
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isVisible = false">取 消</el-button>
+        <el-button type="primary" @click="manageCourse()">确 定</el-button>
+      </span>
+    </el-dialog>-->
   </el-container>
 </template>
 
@@ -172,7 +221,7 @@ export default {
       tableData: [],
       condition: {
         pageNum: 0,
-        pageSize: 5,
+        pageSize: 15,
         blogTitle: null,
         blogCategoryId: null
       },

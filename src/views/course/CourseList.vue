@@ -179,7 +179,7 @@ export default {
       teacherList: [],
       condition: {
         pageNum: 0,
-        pageSize: 5,
+        pageSize: 15,
         course: {}
       },
       course: {},

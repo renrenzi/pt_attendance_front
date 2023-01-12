@@ -222,7 +222,7 @@ export default {
       multipleSelection: [],
       condition: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 15,
         categoryName: ''
       },
       totalSize: 10,
