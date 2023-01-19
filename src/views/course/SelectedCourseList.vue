@@ -67,7 +67,7 @@
         >
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.commentStatus === 1 ? true :false"
+              v-model="scope.row.commentStatus === 1"
               class="switch"
               active-text="已审核"
               inactive-text="未审核"
@@ -83,7 +83,7 @@
         >
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.isDeleted === 1 ? true :false"
+              v-model="scope.row.isDeleted === 1"
               class="switch"
               active-text="已删除"
               inactive-text="未删除"

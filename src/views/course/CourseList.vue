@@ -18,7 +18,7 @@
             />
 
           </el-col>
-          <el-col :span="4" :push="8">
+          <el-col :span="4" :push="14">
             <el-button
               type="success"
               icon="el-icon-refresh-right"
@@ -118,18 +118,18 @@
       width="40%"
     >
       <el-row>
-        <el-col span="4">
+        <el-col :span="4">
           课程名称：
         </el-col>
-        <el-col span="16">
+        <el-col :span="16">
           <el-input v-model="course.name" />
         </el-col>
       </el-row>
       <el-row>
-        <el-col span="4">
+        <el-col :span="4">
           授课教师：
         </el-col>
-        <el-col span="16">
+        <el-col :span="16">
           <el-select v-model="course.teacherId" placeholder="请选择授課教師">
             <el-option
               v-for="item in teacherList"
@@ -141,18 +141,18 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col span="4">
+        <el-col :span="4">
           选课人数：
         </el-col>
-        <el-col span="16">
+        <el-col :span="16">
           <el-input v-model="course.selectedNum" />
         </el-col>
       </el-row>
       <el-row>
-        <el-col span="4">
+        <el-col :span="4">
           最多选课人数：
         </el-col>
-        <el-col span="16">
+        <el-col :span="16">
           <el-input v-model="course.maxNum" />
         </el-col>
       </el-row>
@@ -202,11 +202,15 @@ export default {
     },
     manageCourse() {
       editCourseDetail({
-        'course': this.course
+        'id': this.course.id,
+        'info': this.course.info,
+        'maxNum': this.course.maxNum,
+        'name': this.course.name,
+        'selectedNum': this.course.selectedNum,
+        'teacherId': this.course.teacherId
       }).then(res => {
         this.handleCurrentChange(1)
         this.isVisible = false
-        assertSuccessMessage('修改成功')
       })
     },
     editCourse(course) {

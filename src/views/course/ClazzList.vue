@@ -5,43 +5,33 @@
         <el-row :gutter="10">
           <el-col :span="4">
             <el-input
-              v-model="condition.blogTitle"
-              placeholder="输入文章标题"
+              v-model="condition.clazz.name"
+              placeholder="输入专业名称"
             />
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="condition.blogCategoryId" placeholder="请选择文章分类">
-              <el-option
-                v-model="categoryEmpty"
-                label="----- 不选 -----"
-              />
-              <el-option
-                v-for="item in categoryList"
-                :key="item.categoryId"
-                :label="item.categoryName"
-                :value="item.categoryId"
-              />
-            </el-select>
           </el-col>
           <el-col :span="4">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
-
-              :loading="loding"
-              @click="searchPage"
+              @click="handleCurrentChange(1)"
             />
 
           </el-col>
-          <el-col :span="4" :push="8">
+          <el-col :span="4" :push="14">
             <el-button
               type="success"
               icon="el-icon-refresh-right"
               size="small"
-
-              @click="refreshPage"
+              @click="handleCurrentChange(1)"
             />
+            <el-button
+              type="primary"
+              size="small"
+              @click="isVisible = true, clazz = {}"
+            >
+              新增
+            </el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -66,41 +56,24 @@
           prop="name"
           label="专业名称"
           width="200"
-        >
-        </el-table-column>
+        />
         <el-table-column
           prop="info"
           label="专业详情"
         />
         <el-table-column
-          label="文章状态"
-        >
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.blogStatus === 1 ? true :false"
-              v-loading.fullscreen.lock="fullscreenLoading"
-              class="switch"
-              active-text="发布"
-              inactive-text="草稿"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @click.native="editBlogStatus(scope.row.blogId,scope.row.blogStatus)"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column
           prop="name"
-          label="评论"
+          label="启用状态"
         >
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.enableComment == 1 ? true :false"
+              v-model="scope.row.state === 1"
               class="switch"
-              active-text="允许评论"
-              inactive-text="禁止评论"
+              active-text="已启用"
+              inactive-text="未启用"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @click.native="editEnableComment(scope.row.blogId,scope.row.enableComment)"
+              @click.native="scope.row.state = scope.row.state === 1 ? 0 : 1, editClazz(scope.row)"
             />
           </template>
         </el-table-column>
@@ -111,35 +84,18 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-
             <el-button
               size="small"
-              @click="editBlog(scope.row.blogId)"
+              @click="isVisible = true, clazz = scope.row"
             >
               编辑
             </el-button>
             <el-button
-              v-if="scope.row.isDeleted === 0"
               type="danger"
               size="small"
-              @click="deleteBlog(scope.row.blogId)"
+              @click="deleteClazz(scope.row.id)"
             >
               删除
-            </el-button>
-            <el-button
-              v-if="scope.row.isDeleted === 1"
-              type="warning"
-              size="small"
-              @click="restoreBlog(scope.row.blogId)"
-            >
-              还原
-            </el-button>
-            <el-button
-              type="danger"
-              size="small"
-              @click="clearBlog(scope.row.blogId)"
-            >
-              清除
             </el-button>
           </template>
         </el-table-column>
@@ -154,244 +110,98 @@
         @current-change="handleCurrentChange"
       />
     </el-main>
-<!--    <el-dialog
-      title="课程管理"
+    <el-dialog
+      title="专业管理"
       :visible.sync="isVisible"
-      width="40%"
+      width="25%"
     >
       <el-row>
-        <el-col span="4">
-          课程名称：
+        <el-col :span="4">
+          专业名称：
         </el-col>
-        <el-col span="16">
-          <el-input v-model="course.name" />
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col span="4">
-          授课教师：
-        </el-col>
-        <el-col span="16">
-          <el-select v-model="course.teacherId" placeholder="请选择授課教師">
-            <el-option
-              v-for="item in teacherList"
-              :key="item.id"
-              :label="item.username"
-              :value="item.id"
-            />
-          </el-select>
+        <el-col :span="16">
+          <el-input v-model="clazz.name" />
         </el-col>
       </el-row>
       <el-row>
-        <el-col span="4">
-          选课人数：
+        <el-col :span="4">
+          专业详情：
         </el-col>
-        <el-col span="16">
-          <el-input v-model="course.selectedNum" />
+        <el-col :span="16">
+          <el-input v-model="clazz.info" />
         </el-col>
       </el-row>
       <el-row>
-        <el-col span="4">
-          最多选课人数：
+        <el-col :span="4">
+          启用状态：
         </el-col>
-        <el-col span="16">
-          <el-input v-model="course.maxNum" />
+        <el-col :span="16">
+          <el-switch
+            v-model="clazz.state === 1"
+            class="switch"
+            active-text="已启用"
+            inactive-text="未启用"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            disabled
+          />
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="isVisible = false">取 消</el-button>
-        <el-button type="primary" @click="manageCourse()">确 定</el-button>
+        <el-button type="primary" @click="editClazz(clazz)">确 定</el-button>
       </span>
-    </el-dialog>-->
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
-import { clearBlog, deleteBlog, pageBlog, restoreBlog, updateBlogStatus } from '@/api/blogmanager/blog'
-import { getBlogCategoryList } from '@/api/blogmanager/blogCategory'
-import qs from 'qs'
-import {pageClazzList} from "@/api/attendance/clazz";
+import {batchDeleteClazz, editClazzInfo, pageClazzList} from '@/api/attendance/clazz'
+import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
 
 export default {
   name: 'ClazzList',
   data() {
     return {
-      fullscreenLoading: false,
       loading: true,
       tableData: [],
       condition: {
         pageNum: 0,
         pageSize: 15,
-        blogTitle: null,
-        blogCategoryId: null
+        clazz: {}
       },
       totalSize: 10,
       multipleSelection: [],
-      value: '',
-      loding: false,
-      blogCategoryId: '',
-      categoryList: [],
-      categoryEmpty: null
+      isVisible: false,
+      clazz: {}
     }
   },
   created() {
     this.handleCurrentChange(1)
   },
   methods: {
-    restoreBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将还原该文章, 是否继续?', '提示', {
+    deleteClazz(id) {
+      const clazzIds = []
+      clazzIds.push(id)
+      this.$confirm('此操作将永久删除该专业, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        _this.fullscreenLoading = true
-        restoreBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code === 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '还原成功!'
-              })
-            }, 500)
-          }
+        this.loading = true
+        batchDeleteClazz(clazzIds).then(res => {
+          this.handleCurrentChange(1)
+          assertSuccessMessage('删除成功!')
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消还原'
-        })
+        assertNormalMessage('已取消删除')
       })
     },
-    editEnableComment(id, enableComment) {
-      enableComment = enableComment === 0 ? 1 : 0
-      const _this = this
-      this.fullscreenLoading = true
-      updateBlogStatus(qs.stringify({
-        blogId: id,
-        enableComment: enableComment
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.handleCurrentChange(1)
-          setTimeout(() => {
-            this.fullscreenLoading = false
-            this.$message({
-              message: '修改成功',
-              center: true,
-              type: 'success'
-            })
-          }, 500)
-        }
-      })
-    },
-    editBlogStatus(id, blogStatus) {
-      this.fullscreenLoading = true
-      blogStatus = blogStatus === 0 ? 1 : 0
-      const _this = this
-      updateBlogStatus(qs.stringify({
-        blogId: id, blogStatus: blogStatus
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.handleCurrentChange(1)
-          setTimeout(() => {
-            this.fullscreenLoading = false
-            this.$message({
-              message: '修改成功',
-              center: true,
-              type: 'success'
-            })
-          }, 500)
-        }
-      })
-    },
-    editBlog(blogId) {
-      this.$router.push(
-        {
-          path: '/editBlog',
-          query: {
-            blogId: blogId
-          }
-        })
-    },
-    clearBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将请清除数据库, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        _this.fullscreenLoading = true
-        clearBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code === 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '清除数据库成功!'
-              })
-            }, 500)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消清除数据库'
-        })
-      })
-    },
-    deleteBlog(blogId) {
-      const _this = this
-      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        _this.fullscreenLoading = true
-        deleteBlog(qs.stringify({
-          blogId: blogId
-        })).then(res => {
-          if (res.code == 2000) {
-            _this.handleCurrentChange(1)
-            setTimeout(() => {
-              this.fullscreenLoading = false
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            }, 500)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    refreshPage() {
-      this.loading = true
-      this.condition.blogTitle = null
-      this.condition.blogCategoryId = null
-      this.handleCurrentChange(1)
-    },
-    searchPage() {
-      this.loding = true
-      this.handleCurrentChange(1)
-      this.loding = false
-    },
-    getBlogCategory() {
-      getBlogCategoryList().then(res => {
-        this.categoryList = res
+    editClazz(clazz) {
+      editClazzInfo(clazz).then(res => {
+        this.handleCurrentChange(1)
+        this.isVisible = false
       })
     },
     toggleSelection(rows) {
@@ -407,21 +217,19 @@ export default {
       this.multipleSelection = val
     },
     handleSizeChange(val) {
-      const _this = this
       this.condition.pageSize = val
       pageClazzList(this.condition).then(res => {
         this.totalSize = res.totalSize
         this.tableData = res.clazzList
-        _this.loading = false
+        this.loading = false
       })
     },
     handleCurrentChange(val) {
-      const _this = this
       this.condition.pageNum = val
       pageClazzList(this.condition).then(res => {
         this.totalSize = res.totalSize
         this.tableData = res.clazzList
-        _this.loading = false
+        this.loading = false
       })
     }
   }
@@ -429,9 +237,12 @@ export default {
 </script>
 
 <style scoped>
-.idCard{
+.idCard {
   height: 100px;
   margin-top: 10px;
   width: 95%;
+}
+.el-row{
+  margin-top: 10px;
 }
 </style>
