@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import {batchDeleteClazz, editClazzInfo, pageClazzList} from '@/api/attendance/clazz'
+import { batchDeleteClazz, editClazzInfo, pageClazzList } from '@/api/attendance/clazz'
 import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
 
 export default {

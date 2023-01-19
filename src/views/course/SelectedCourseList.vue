@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="120">
-      <el-card style="height: 100px;margin-top: 10px">
+      <el-card style="height: 100px;margin-top: 10px" class="idCard">
 
         <el-row :gutter="10">
           <el-col :span="4">
@@ -24,13 +24,20 @@
             />
 
           </el-col>
-          <el-col :span="4" :push="8">
+          <el-col :span="4" :push="14">
             <el-button
               type="success"
               icon="el-icon-refresh-right"
               size="small"
               @click="refreshPage"
             />
+            <el-button
+              type="primary"
+              size="small"
+              @click="selectedCourseDialog = true"
+            >
+              新增
+            </el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -41,7 +48,7 @@
         v-loading="fullscreenLoading"
         :data="tableData"
         tooltip-effect="dark"
-        style="width: 100%"
+        style="width: 95%;margin-top: 10px"
         :border="true"
         :header-cell-style="{background:'#e1e4e5',color:'#80878f','text-align':'center'}"
         :cell-style="{'text-align':'center'}"
@@ -52,47 +59,25 @@
           width="55"
         />
         <el-table-column
-          prop="studentId"
-          label="学生Id"
-          width="200"
+          prop="userName"
+          label="学号"
         />
         <el-table-column
-          prop="courseId"
-          label="课程Id"
-          width="168"
+          prop="nickName"
+          label="姓名"
         />
         <el-table-column
-          prop="name"
-          label="审核"
-        >
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.commentStatus === 1"
-              class="switch"
-              active-text="已审核"
-              inactive-text="未审核"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @click.native="editCommentStatus(scope.row.commentId,scope.row.commentStatus)"
-            />
-          </template>
-        </el-table-column>
+          prop="courseName"
+          label="课程名称"
+        />
         <el-table-column
-          prop="name"
-          label="当前状态"
-        >
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.isDeleted === 1"
-              class="switch"
-              active-text="已删除"
-              inactive-text="未删除"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @click.native="editDelete(scope.row.commentId,scope.row.isDeleted)"
-            />
-          </template>
-        </el-table-column>
+          prop="selectedNum"
+          label="选课人数"
+        />
+        <el-table-column
+          prop="maxNum"
+          label="最多选课人数"
+        />
         <el-table-column
           prop="name"
           label="操作"
@@ -100,17 +85,17 @@
         >
           <template slot-scope="scope">
             <el-button
-              type="primary"
               size="small"
-              icon="el-icon-edit"
-              @click="editComment(scope.row.commentId)"
-            />
+              @click="handleSelectionCourse(scope.row)"
+            >
+              编辑
+            </el-button>
             <el-button
               type="danger"
-              icon="el-icon-delete"
               size="small"
-              @click="clearComment(scope.row.commentId)"
-            />
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,124 +111,94 @@
     </el-main>
 
     <el-dialog
-      title="修改评论信息"
-      :visible.sync="commentDialog"
+      title="选课管理"
+      :visible.sync="selectedCourseDialog"
       width="35%"
       center
     >
       <el-row type="flex" justify="center">
         <el-col :span="4">
-          回复内容:
+          学号:
         </el-col>
         <el-col :span="20">
-          <el-input v-model="commentInfo.replyBody" />
+          <el-input v-model="selectedCourse.userName" disabled />
         </el-col>
       </el-row>
-
+      <el-row type="flex" justify="center">
+        <el-col :span="4">
+          姓名:
+        </el-col>
+        <el-col :span="20">
+          <el-input v-model="selectedCourse.nickName" disabled />
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="4">
+          已选课程:
+        </el-col>
+        <el-col :span="20">
+          <el-select v-model="selectedCourse.courseId" placeholder="请选择授課教師">
+            <el-option
+              v-for="item in courseList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="commentDialog = false">取 消</el-button>
-        <el-button type="primary" @click="updateComment">确 定</el-button>
+        <el-button @click="selectedCourseDialog = false">取 消</el-button>
+        <el-button type="primary" @click="updateSelectedCourse()">确 定</el-button>
       </span>
     </el-dialog>
   </el-container>
 </template>
 
 <script>
-import qs from 'qs'
-import { pageSelectedCourseList } from '@/api/attendance/selectedCourse'
+import { pageSelectedCourseList, updateSelectedCourse } from '@/api/attendance/selectedCourse'
+import { pageCourseList } from '@/api/attendance/course'
 
 export default {
   name: 'CommentList',
   data() {
     return {
-      commentInfo: {
-        commentId: '',
-        replyBody: ''
-      },
-      commentDialog: false,
+      selectedCourse: {},
+      selectedCourseDialog: false,
       fullscreenLoading: false,
-      blogList: [],
       tableData: [],
       condition: {
         pageNum: 1,
-        pageSize: 15,
-        blogId: ''
+        pageSize: 15
       },
-      totalSize: 10,
+      totalSize: 15,
       multipleSelection: [],
-      currentPage: 1
+      currentPage: 1,
+      courseList: []
     }
   },
   created() {
     this.handleCurrentChange(1)
+    this.getCourseList()
   },
   methods: {
-    updateComment() {
-      const _this = this
-      updateCommentStatus(qs.stringify({
-        commentId: this.commentInfo.commentId,
-        replyBody: this.commentInfo.replyBody
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.handleCurrentChange(1)
-          _this.commentDialog = false
-        }
+    handleSelectionCourse(selectedCourse) {
+      selectedCourse.oldCourseId = selectedCourse.courseId
+      this.selectedCourse = selectedCourse
+      this.selectedCourseDialog = true
+    },
+    updateSelectedCourse() {
+      updateSelectedCourse(this.selectedCourse).then(res => {
+        this.selectedCourseDialog = false
+        this.handleCurrentChange(1)
       })
     },
-    editComment(id) {
-      const _this = this
-      getComment(qs.stringify({
-        commentId: id
-      })).then(res => {
-        if (res.code === 2000) {
-          _this.commentInfo = res.data
-          _this.commentDialog = true
-        }
-      })
-    },
-    clearComment(id) {
-      const _this = this
-      this.$confirm('此操作将请清除数据库, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        _this.fullscreenLoading = true
-        deleteComment(qs.stringify({
-          commentId: id
-        })).then(res => {
-          _this.handleCurrentChange(1)
-          this.$message({
-            type: 'success',
-            message: '清除数据库成功!'
-          })
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消清除数据库'
-        })
-      })
-    },
-    editDelete(id, isDeleted) {
-      this.fullscreenLoading = true
-      isDeleted = isDeleted === 0 ? 1 : 0
-      const _this = this
-      updateCommentStatus(qs.stringify({
-        commentId: id, isDeleted: isDeleted
-      })).then(res => {
-        _this.handleCurrentChange(1)
-      })
-    },
-    editCommentStatus(id, commentStatus) {
-      this.fullscreenLoading = true
-      commentStatus = commentStatus === 0 ? 1 : 0
-      const _this = this
-      updateCommentStatus(qs.stringify({
-        commentId: id, commentStatus: commentStatus
-      })).then(res => {
-        _this.handleCurrentChange(1)
+    getCourseList() {
+      pageCourseList({
+        'pageNum': 1,
+        'pageSize': 1000
+      }).then(res => {
+        this.courseList = res.pageCourseDtoList
       })
     },
     refreshPage() {
@@ -255,11 +210,6 @@ export default {
       this.loding = true
       this.handleCurrentChange(1)
       this.loding = false
-    },
-    getBlogList() {
-      getBlogList().then(res => {
-        this.blogList = res
-      })
     },
     toggleSelection(rows) {
       if (rows) {
@@ -300,5 +250,12 @@ export default {
 </script>
 
 <style scoped>
-
+.idCard {
+  height: 100px;
+  margin-top: 10px;
+  width: 95%;
+}
+.el-row{
+  margin-top: 10px;
+}
 </style>
