@@ -138,7 +138,7 @@
           已选课程:
         </el-col>
         <el-col :span="20">
-          <el-select v-model="selectedCourse.courseId" placeholder="请选择授課教師">
+          <el-select v-model="selectedCourse.courseId" placeholder="请选择课程">
             <el-option
               v-for="item in courseList"
               :key="item.id"
@@ -208,7 +208,7 @@ export default {
     getStudentList() {
       pageStudentList({
         'pageNum': 1,
-        'pageSize': 1000
+        'pageSize': 100
       }).then(res => {
         this.studentList = res.studentList
       })
@@ -228,7 +228,7 @@ export default {
     getCourseList() {
       pageCourseList({
         'pageNum': 1,
-        'pageSize': 1000
+        'pageSize': 100
       }).then(res => {
         this.courseList = res.pageCourseDtoList
       })

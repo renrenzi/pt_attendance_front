@@ -145,7 +145,7 @@
           选课人数：
         </el-col>
         <el-col :span="16">
-          <el-input v-model="course.selectedNum" disabled/>
+          <el-input v-model="course.selectedNum" disabled />
         </el-col>
       </el-row>
       <el-row>

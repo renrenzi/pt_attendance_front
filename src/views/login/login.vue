@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">博客后台管理系统</h3>
+      <h3 class="title">学生考勤后台管理系统</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -45,9 +45,8 @@
 </template>
 
 <script>
-import { login } from '../../api/blogmanager/admin'
-import qs from 'qs'
-import { setToken, setUser } from '@/utils/auth'
+
+import { setToken } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -84,9 +83,9 @@ export default {
   methods: {
     login() {
       this.loading = true
-      setToken("模拟用户");
-      this.$router.push({path: '/home'});
-      /*login(qs.stringify({
+      setToken('模拟用户')
+      this.$router.push({ path: '/home' })
+      /* login(qs.stringify({
         loginUserName: this.loginForm.username,
         loginPassword: this.loginForm.password
       })).then(res => {
@@ -115,7 +114,7 @@ export default {
   align-items: center;
   height: 100%;
   width: 100%;
-  background-image: url("https://haise.oss-cn-fuzhou.aliyuncs.com/carousel1.013f0e2e.png");
+  background-image: url("https://haise.oss-cn-fuzhou.aliyuncs.com/back.jpg");
   background-size: cover;
   z-index: 100;
 }
