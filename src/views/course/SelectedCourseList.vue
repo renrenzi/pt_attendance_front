@@ -5,12 +5,12 @@
 
         <el-row :gutter="10">
           <el-col :span="4">
-            <el-select v-model="condition.blogId" placeholder="请选择博客标题">
+            <el-select v-model="condition.selectedCourse.studentId" placeholder="请选择学生">
               <el-option
-                v-for="item in blogList"
-                :key="item.blogId"
-                :label="item.blogTitle"
-                :value="item.blogId"
+                v-for="item in studentList"
+                :key="item.id"
+                :label="item.nickName"
+                :value="item.id"
               />
             </el-select>
           </el-col>
@@ -34,7 +34,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="selectedCourseDialog = true"
+              @click="selectedCourseDialog = true, ableFlag = false, selectedCourse = {}"
             >
               新增
             </el-button>
@@ -93,6 +93,7 @@
             <el-button
               type="danger"
               size="small"
+              @click="deleteSelectedCourse(scope.row.id)"
             >
               删除
             </el-button>
@@ -118,18 +119,18 @@
     >
       <el-row type="flex" justify="center">
         <el-col :span="4">
-          学号:
-        </el-col>
-        <el-col :span="20">
-          <el-input v-model="selectedCourse.userName" disabled />
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center">
-        <el-col :span="4">
           姓名:
         </el-col>
         <el-col :span="20">
-          <el-input v-model="selectedCourse.nickName" disabled />
+          <el-input v-if="ableFlag" v-model="selectedCourse.nickName" disabled />
+          <el-select v-else v-model="selectedCourse.studentId" placeholder="请选择学生">
+            <el-option
+              v-for="item in studentList"
+              :key="item.id"
+              :label="item.nickName"
+              :value="item.id"
+            />
+          </el-select>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -156,36 +157,67 @@
 </template>
 
 <script>
-import { pageSelectedCourseList, updateSelectedCourse } from '@/api/attendance/selectedCourse'
+import { batchDeleteSelectedCourse, pageSelectedCourseList, updateSelectedCourse } from '@/api/attendance/selectedCourse'
 import { pageCourseList } from '@/api/attendance/course'
+import { pageStudentList } from '@/api/attendance/student'
+import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
 
 export default {
-  name: 'CommentList',
+  name: 'SelectedCourseList',
   data() {
     return {
       selectedCourse: {},
       selectedCourseDialog: false,
       fullscreenLoading: false,
+      ableFlag: true,
       tableData: [],
       condition: {
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
+        selectedCourse: {}
       },
       totalSize: 15,
       multipleSelection: [],
       currentPage: 1,
-      courseList: []
+      courseList: [],
+      studentList: []
     }
   },
   created() {
     this.handleCurrentChange(1)
     this.getCourseList()
+    this.getStudentList()
   },
   methods: {
+    deleteSelectedCourse(id) {
+      this.$confirm('此操作将永久删除该選課記錄, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.loading = true
+        batchDeleteSelectedCourse([id]).then(res => {
+          this.handleCurrentChange(1)
+          assertSuccessMessage('删除成功!')
+        })
+      }).catch(() => {
+        assertNormalMessage('已取消删除')
+      })
+    },
+    getStudentList() {
+      pageStudentList({
+        'pageNum': 1,
+        'pageSize': 1000
+      }).then(res => {
+        this.studentList = res.studentList
+      })
+    },
     handleSelectionCourse(selectedCourse) {
       selectedCourse.oldCourseId = selectedCourse.courseId
       this.selectedCourse = selectedCourse
       this.selectedCourseDialog = true
+      this.ableFlag = true
     },
     updateSelectedCourse() {
       updateSelectedCourse(this.selectedCourse).then(res => {
@@ -255,7 +287,8 @@ export default {
   margin-top: 10px;
   width: 95%;
 }
-.el-row{
+
+.el-row {
   margin-top: 10px;
 }
 </style>

@@ -29,7 +29,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="isVisible = true, course = {}"
+              @click="isVisible = true, course = {'selectedNum':0}"
             >
               新增
             </el-button>
@@ -145,7 +145,7 @@
           选课人数：
         </el-col>
         <el-col :span="16">
-          <el-input v-model="course.selectedNum" />
+          <el-input v-model="course.selectedNum" disabled/>
         </el-col>
       </el-row>
       <el-row>
