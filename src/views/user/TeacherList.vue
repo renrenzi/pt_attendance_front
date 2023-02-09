@@ -142,12 +142,12 @@
         />
         <el-table-column
           prop="createDate"
-          label="创建时间"
+          label="头像"
         >
           <template slot-scope="scope">
             <el-image
               style="width: 30px; height: 30px"
-              :src="scope.row.categoryIcon"
+              src="https://haise.oss-cn-fuzhou.aliyuncs.com/u%3D3088070715%2C2077282667%26fm%3D253%26app%3D138%26size%3Dw931%26n%3D0%26f%3DJPEG%26fmt%3Dauto.webp?Expires=1675945448&OSSAccessKeyId=TMP.3KeiGp155KzbVVcLGYxZQ3AqJi1RqnkEPFmjRTPdE9sCyDgrcs7iFrNcesvxeFinTGByQ5UsJ7FBZxUuFeTtwSrU2ZcBij&Signature=SN4jL%2FvvLG1moWcXzADm3iEiIMQ%3D"
               fit="fill"
             />
           </template>
