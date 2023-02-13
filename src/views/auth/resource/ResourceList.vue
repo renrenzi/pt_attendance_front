@@ -207,8 +207,8 @@
 
 <script>
 import qs from 'qs'
-import { addResource, deleteResources, editResource, pageResource } from '@/api/blogmanager/userResource'
-import { pageResourceCategory } from '@/api/blogmanager/userResourceCategory'
+import { addResource, deleteResources, editResource, pageResource } from '@/api/attendance/userResource'
+import { pageResourceCategory } from '@/api/attendance/userResourceCategory'
 
 export default {
   name: 'ResourceManager',

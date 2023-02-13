@@ -208,9 +208,9 @@
 
 <script>
 import qs from 'qs'
-import { addRole, deleteRoles, editRole, pageRole } from '@/api/blogmanager/userRole'
-import { getResourceByRoleId, pageResource } from '@/api/blogmanager/userResource'
-import { pageResourceCategory } from '@/api/blogmanager/userResourceCategory'
+import { addRole, deleteRoles, editRole, pageRole } from '@/api/attendance/userRole'
+import { getResourceByRoleId, pageResource } from '@/api/attendance/userResource'
+import { pageResourceCategory } from '@/api/attendance/userResourceCategory'
 
 export default {
   name: 'RoleManager',

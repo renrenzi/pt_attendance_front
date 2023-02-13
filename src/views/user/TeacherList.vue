@@ -204,7 +204,6 @@
 </template>
 
 <script>
-import { pageStudentList } from '@/api/attendance/student'
 import {pageTeacherList} from "@/api/attendance/teacher";
 
 export default {

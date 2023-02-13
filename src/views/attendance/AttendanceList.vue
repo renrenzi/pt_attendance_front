@@ -2,7 +2,6 @@
   <el-container>
     <el-header height="120px">
       <el-card style="height: 100px;margin-top: 10px">
-
         <el-row :gutter="10">
           <el-col :span="4">
             <el-input  :gutter="10" placeholder="请输入标签名" />
@@ -22,21 +21,28 @@
               size="small"
               @click="searchAttendance"
             />
+            <el-button
+              type="primary"
+              size="small"
+            >
+              导出
+            </el-button>
           </el-col>
-          <el-dialog
-            title="添加标签信息"
-            :visible.sync="attendanceFlag"
-            width="30%"
-            size="small"
-          >
-            <el-input/>
-            <span slot="footer" class="dialog-footer">
+
+        </el-row>
+      </el-card>
+      <el-dialog
+        title="添加标签信息"
+        :visible.sync="attendanceFlag"
+        width="30%"
+        size="small"
+      >
+        <el-input/>
+        <span slot="footer" class="dialog-footer">
               <el-button >取 消</el-button>
               <el-button type="primary">确 定</el-button>
             </span>
-          </el-dialog>
-        </el-row>
-      </el-card>
+      </el-dialog>
     </el-header>
     <el-main>
 

@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { addConfig, deleteConfig, getConfigList, updateConfig } from '../../api/blogmanager/blogConfig'
+import { addConfig, deleteConfig, getConfigList, updateConfig } from '@/api/attendance/config'
 import qs from 'qs'
 
 export default {

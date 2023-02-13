@@ -125,7 +125,7 @@ import {
   addResourceCategory,
   deleteResourceCategory, editResourceCategory,
   pageResourceCategory
-} from '../../../api/blogmanager/userResourceCategory'
+} from '@/api/attendance/userResourceCategory'
 
 export default {
   name: 'ResourceCategory',

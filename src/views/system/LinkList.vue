@@ -171,7 +171,7 @@ import {
   getLinkTypeList,
   isDel,
   pageLinkList
-} from '../../api/blogmanager/blogLink'
+} from '@/api/attendance/link'
 import qs from 'qs'
 
 export default {

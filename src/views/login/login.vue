@@ -47,6 +47,7 @@
 <script>
 
 import { setToken } from '@/utils/auth'
+import {userLoginInfo} from "@/api/attendance/admin";
 
 export default {
   name: 'Login',
@@ -55,7 +56,7 @@ export default {
       codeUrl: '',
       cookiePassword: '',
       loginForm: {
-        username: 'test',
+        username: 'admin',
         password: '123456',
         rememberMe: false,
         code: '',
@@ -82,26 +83,13 @@ export default {
   },
   methods: {
     login() {
-      this.loading = true
-      setToken('模拟用户')
-      this.$router.push({ path: '/home' })
-      /* login(qs.stringify({
-        loginUserName: this.loginForm.username,
-        loginPassword: this.loginForm.password
-      })).then(res => {
-        if (res.code === 2000) {
-          this.$store.state.adminUser = res.data.adminUser
-          this.$store.state.imgUrl = res.data.imgUrl
-          setToken(res.data.token)
-          this.$router.push({ path: '/home' })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '账户名或密码错误'
-          })
-          this.loading = false
-        }
-      })*/
+       userLoginInfo({
+        userName: this.loginForm.username,
+        password: this.loginForm.password
+      }).then(res => {
+         setToken(res.data)
+         this.$router.push({ path: '/home' })
+      })
     }
   }
 }

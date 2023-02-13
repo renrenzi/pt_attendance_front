@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import { getConfigList } from '../../api/blogmanager/blogConfig'
-import { getCount } from '../../api/blogmanager/admin'
+import { getConfigList } from '@/api/attendance/config'
+import { getCount } from '@/api/attendance/admin'
 
 export default {
   name: 'Home',

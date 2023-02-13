@@ -53,7 +53,17 @@
             <el-col :span="4">
               <el-input v-model="condition.loginUserName" :gutter="10" placeholder="请输入用户名" />
             </el-col>
-            <el-col :span="2" :push="18">
+            <el-col :span="4">
+              <el-select v-model="condition.roleId" :span="4"  placeholder="请选择角色标签">
+                <el-option
+                  v-for="item in roleList"
+                  :key="item.roleId"
+                  :label="item.roleName"
+                  :value="item.roleId"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="2" :push="14">
               <el-button
                 @click="isAddOrEdit = true, isEdit = false, adminUser={}"
               >
@@ -147,16 +157,29 @@
         />
         <el-table-column
           type="id"
+          prop="id"
           label="编号"
           width="50"
         />
         <el-table-column
-          prop="username"
+          prop="userName"
+          label="账号"
+        />
+        <el-table-column
+          prop="info.username"
           label="用户名"
         />
         <el-table-column
-          prop="clazzId"
-          label="专业"
+          prop="info.nickName"
+          label="昵称"
+        />
+        <el-table-column
+          prop="info.sex"
+          label="性别"
+        />
+        <el-table-column
+          prop="roleName"
+          label="角色"
         />
         <el-table-column
           prop="createDate"
@@ -231,11 +254,9 @@
 
 <script>
 import qs from 'qs'
-import { deleteUsers, editUserInfo, pageUser, registerUser } from '@/api/blogmanager/admin'
-import { pageRole } from '@/api/blogmanager/userRole'
-import { allocateRole, getRoleListById } from '@/api/blogmanager/userRoleRelation'
-import { pageTeacherList } from '@/api/attendance/teacher'
-import { pageStudentList } from '@/api/attendance/student'
+import {deleteUsers, editUserInfo, pageAdminInfoList, registerUser} from '@/api/attendance/admin'
+import { pageRole } from '@/api/attendance/userRole'
+import { allocateRole, getRoleListById } from '@/api/attendance/userRoleRelation'
 
 export default {
   name: 'UserManager',
@@ -258,7 +279,7 @@ export default {
       condition: {
         pageNum: 1,
         pageSize: 15,
-        loginUserName: null
+        roleId: 7
       },
       totalSize: 10
     }
@@ -376,9 +397,9 @@ export default {
     handleSizeChange(val) {
       this.condition.pageSize = val
       this.fullscreenLoading = true
-      pageTeacherList(this.condition).then(res => {
-        this.totalSize = res.totalSize
-        this.tableData = res.teacherList
+      pageAdminInfoList(this.condition).then(res => {
+        this.totalSize = res.data.totalSize
+        this.tableData = res.data.data
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 500)
@@ -387,11 +408,10 @@ export default {
     handleCurrentChange(val) {
       this.condition.pageNum = val
       this.fullscreenLoading = true
-      pageTeacherList(this.condition).then(res => {
+      pageAdminInfoList(this.condition).then(res => {
         console.info(res)
-
-        this.totalSize = res.totalSize
-        this.tableData = res.teacherList
+        this.totalSize = res.data.totalSize
+        this.tableData = res.data.data
       })
       setTimeout(() => {
         this.fullscreenLoading = false
