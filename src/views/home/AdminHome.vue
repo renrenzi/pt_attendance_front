@@ -2,13 +2,20 @@
   <el-container style="background: rgb(238, 241, 246)">
     <el-header style="background: rgb(255,255,255)" height="80px">
       <el-row style="background: rgb(238, 241, 246);height: 40px;margin-top: 20px;margin-left: 10px" type="flex">
-        <el-col span="4" style="margin-top: 10px;margin-left: 10px">
+        <el-col :span="4" style="margin-top: 10px;margin-left: 10px">
           欢迎管理员：
           <span style="color: red">{{ this.$store.state.adminUser.nickName }}</span>
         </el-col>
-        <el-col span="4" style="margin-top: 5px;margin-left: -30px">
+        <el-col style="margin-top: 5px;margin-left: -30px">
           <el-divider direction="vertical" />
-          当前时间:<span class="text-24 text-white" v-html="formateTimeStamp(date)" />
+          <el-statistic
+            ref="statistic"
+            format="HH:mm:ss"
+            :value="date"
+            title="当前时间："
+            time-indices
+          >
+          </el-statistic>
         </el-col>
 
       </el-row>
@@ -111,7 +118,7 @@ export default {
   data() {
     return {
       tableData: [],
-      date: new Date().getTime(),
+      date: Date.now(),
       count: {
         info: '',
         category: '',
@@ -123,7 +130,7 @@ export default {
     }
   },
   created() {
-    this.loadTime()
+    /*this.loadTime()*/
     this.getConfigList()
     this.getCounts()
   },
