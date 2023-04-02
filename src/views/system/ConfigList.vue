@@ -238,4 +238,7 @@ export default {
   width: 95%;
   margin-left: 10px;
 }
+.el-row {
+  margin-top: 10px;
+}
 </style>
