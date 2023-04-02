@@ -340,4 +340,7 @@ export default {
   margin-top: 10px;
   width: 95%;
 }
+.el-row {
+  margin-top: 10px;
+}
 </style>

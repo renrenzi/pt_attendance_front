@@ -5,7 +5,14 @@
 
         <el-row :gutter="10">
           <el-col :span="4">
-            <el-input :gutter="10" placeholder="请输入标签名" />
+            <el-select v-model="condition.leave.studentId" placeholder="请选择学生">
+              <el-option
+                v-for="item in studentList"
+                :key="item.id"
+                :label="item.nickName"
+                :value="item.id"
+              />
+            </el-select>
           </el-col>
           <el-col :span="2">
             <el-button
@@ -18,8 +25,9 @@
           <el-col :span="8" :push="10">
             <el-button
               type="primary"
+              @click="leaveFlag = true;leave = {};ableFlag = false"
             >
-              添加标签信息
+              添加请假
             </el-button>
             <el-button
               type="success"
@@ -29,18 +37,6 @@
               @click="searchLeave"
             />
           </el-col>
-          <el-dialog
-            title="添加标签信息"
-            :visible.sync="leaveFlag"
-            width="30%"
-            size="small"
-          >
-            <el-input />
-            <span slot="footer" class="dialog-footer">
-              <el-button >取 消</el-button>
-              <el-button type="primary">确 定</el-button>
-            </span>
-          </el-dialog>
         </el-row>
       </el-card>
     </el-header>
@@ -112,12 +108,14 @@
           <template slot-scope="scope">
             <el-button
               size="small"
+              @click="gotoEditLeave(scope.row)"
             >
               编辑
             </el-button>
             <el-button
               type="danger"
               size="small"
+              @click="deleteLeave(scope.row.id)"
             >
               删除
             </el-button>
@@ -136,14 +134,82 @@
       />
 
     </el-main>
-
+    <el-dialog
+      title="请假管理"
+      :visible.sync="leaveFlag"
+      width="35%"
+      center
+    >
+      <el-row type="flex" justify="center" v-if="ableFlag">
+        <el-col :span="4">
+          学号:
+        </el-col>
+        <el-col :span="20">
+          <el-input v-model="leave.userName" disabled/>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="4">
+          姓名:
+        </el-col>
+        <el-col :span="20">
+          <el-input v-if="ableFlag" v-model="leave.nickname" disabled/>
+          <el-select v-else v-model="leave.studentId" placeholder="请选择学生">
+            <el-option
+              v-for="item in studentList"
+              :key="item.id"
+              :label="item.nickName"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="4">
+          请假详情:
+        </el-col>
+        <el-col :span="20">
+          <el-input v-model="leave.info"/>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="4">
+          请假备注:
+        </el-col>
+        <el-col :span="20">
+          <el-input v-model="leave.remark"/>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          请假情况：
+        </el-col>
+        <el-col :span="16">
+          <el-switch
+            v-model="leave.status"
+            class="switch"
+            active-text="已请假"
+            inactive-text="未请假"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          />
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="leaveFlag = false">取 消</el-button>
+        <el-button type="primary" @click="updateLeave()">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 
 </template>
 
 <script>
 
-import { pageLeaveList } from '@/api/attendance/leave'
+import {batchDeleteLeave, pageLeaveList, updateLeaveInfo} from '@/api/attendance/leave'
+import {pageStudentList} from "@/api/attendance/student";
+import {batchDeleteAttendance} from "@/api/attendance/attendance";
+import {assertNormalMessage, assertSuccessMessage} from "@/utils/message";
 
 export default {
   name: 'LabelList',
@@ -151,19 +217,58 @@ export default {
     return {
       leaveFlag: false,
       fullscreenLoading: false,
+      ableFlag: true,
       tableData: [],
       multipleSelection: [],
       condition: {
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
+        leave: {}
       },
-      totalSize: 10
+      totalSize: 10,
+      leave: {},
+      studentList: []
     }
   },
   created() {
     this.searchLeave()
+    this.getStudentList()
   },
   methods: {
+    deleteLeave(id) {
+      this.$confirm('此操作将永久删除该请假記錄, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.fullscreenLoading = true
+        batchDeleteLeave([id]).then(res => {
+          this.handleCurrentChange(1)
+          assertSuccessMessage('删除成功!')
+        })
+      }).catch(() => {
+        assertNormalMessage('已取消删除')
+      })
+    },
+    getStudentList() {
+      pageStudentList({
+        'pageNum': 1,
+        'pageSize': 100
+      }).then(res => {
+        this.studentList = res.studentList
+      })
+    },
+    gotoEditLeave(leave) {
+      this.leave = leave
+      this.leaveFlag = true
+    },
+    updateLeave() {
+      updateLeaveInfo(this.leave).then(res => {
+        this.searchLeave()
+        this.leaveFlag = false
+      })
+    },
     searchLeave() {
       this.handleCurrentChange(1)
     },
@@ -213,30 +318,40 @@ export default {
   display: none;
   color: #fff !important;
 }
+
 /*打开时文字位置设置*/
 .switch .el-switch__label--right {
   z-index: 1;
 }
+
 /* 调整打开时文字的显示位子 */
-.switch .el-switch__label--right span{
+.switch .el-switch__label--right span {
   margin-right: 9px;
 }
+
 /*关闭时文字位置设置*/
 .switch .el-switch__label--left {
   z-index: 1;
 }
+
 /* 调整关闭时文字的显示位子 */
-.switch .el-switch__label--left span{
+.switch .el-switch__label--left span {
   margin-left: 9px;
 }
+
 /*显示文字*/
 .switch .el-switch__label.is-active {
   display: block;
 }
+
 /* 调整按钮的宽度 */
 .switch.el-switch .el-switch__core,
 .el-switch .el-switch__label {
   width: 70px !important;
   margin: 0;
+}
+
+.el-row {
+  margin-top: 10px;
 }
 </style>
