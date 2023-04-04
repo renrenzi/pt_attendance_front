@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="120px">
-      <el-card style="height: 100px;margin-top: 10px">
+      <el-card style="height: 120px;margin-top: 10px;width: 95%">
 
         <el-row :gutter="10">
           <el-col :span="4">
@@ -14,21 +14,25 @@
               />
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="4">
+            <el-date-picker
+              v-model="dateRange"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions">
+            </el-date-picker>
+          </el-col>
+          <el-col :span="4" :push="14">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
               @click="searchLeave"
             />
-          </el-col>
-          <el-col :span="8" :push="10">
-            <el-button
-              type="primary"
-              @click="leaveFlag = true;leave = {};ableFlag = false"
-            >
-              添加请假
-            </el-button>
             <el-button
               type="success"
               icon="el-icon-refresh-right"
@@ -36,6 +40,17 @@
 
               @click="searchLeave"
             />
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" :push="22">
+            <el-button
+              type="primary"
+              size="small"
+              @click="leaveFlag = true;leave = {};ableFlag = false"
+            >
+              添加请假
+            </el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -49,7 +64,7 @@
         :cell-style="{'text-align':'center'}"
         :data="tableData"
         tooltip-effect="dark"
-        style="width: 100%"
+        style="width: 95%"
         :border="true"
         element-loading-text="正在拼命加载中/(ㄒoㄒ)/~~"
         element-loading-spinner="el-icon-loading"
@@ -227,7 +242,35 @@ export default {
       },
       totalSize: 10,
       leave: {},
-      studentList: []
+      studentList: [],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+      dateRange: ""
     }
   },
   created() {

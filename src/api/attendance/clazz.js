@@ -31,3 +31,13 @@ export const pageClazzList = (searchParam) => {
       return false
     })
 }
+
+export const getAllClazz = () => {
+  return service.get(PREFIX + '/get/all/clazz/list')
+    .then(res => {
+      return res.data.data
+    })
+    .catch(res => {
+      return false
+    })
+}

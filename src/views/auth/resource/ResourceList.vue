@@ -289,12 +289,15 @@ export default {
           url: this.requestParams.url,
           description: this.requestParams.description,
           categoryId: this.requestParams.categoryId
-        })).then(res => {})
+        })).then(res => {
+          this.searchResource();
+        })
       } else {
-        addResource(qs.stringify(this.requestParams)).then(res => {})
+        addResource(qs.stringify(this.requestParams)).then(res => {
+          this.searchResource();
+        })
       }
       this.isAdd = false
-      this.searchResource()
     },
     getAllResourceCateList() {
       pageResourceCategory(qs.stringify({
