@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="120px">
-      <el-card style="height: 120px;margin-top: 10px">
+      <el-card style="height: 120px;margin-top: 10px;width: 95%">
         <el-row :gutter="10">
           <el-col :span="4">
             <el-select v-model="condition.attendance.studentId" placeholder="请选择学生">
@@ -81,7 +81,7 @@
         :cell-style="{'text-align':'center'}"
         :data="tableData"
         tooltip-effect="dark"
-        style="width: 100%"
+        style="width: 95%"
         :border="true"
         element-loading-text="正在拼命加载中/(ㄒoㄒ)/~~"
         element-loading-spinner="el-icon-loading"

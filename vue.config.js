@@ -25,11 +25,11 @@ module.exports = {
     },
     proxy: {
       'dev-api': {
-        target: 'http://47.113.191.204:9527',
+        target: 'http://localhost:9527/api',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
-          '^/dev-api': '' // 请求的时候使用这个api就可以
+          '^/dev-api': '' // dev 环境
         }
       },
       'stage-api': {
@@ -37,12 +37,18 @@ module.exports = {
         ws: true,
         changeOrigin: true,
         pathRewrite: {
-          '^/stage-api': '' // 请求的时候使用这个api就可以
+          '^/stage-api': '' // stage 环境
         }
       }
-    }/*,
-
-    before: require('./mock/mock-server.js')*/
+    },
+    'api': {
+      target: 'http://47.113.191.204:9527/api',
+      ws: true,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '' // pro 环境
+      }
+    }
   },
   configureWebpack: {
     name: name,
