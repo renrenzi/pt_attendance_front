@@ -255,7 +255,7 @@
 <script>
 import qs from 'qs'
 import {deleteUsers, editUserInfo, pageAdminInfoList, registerUser} from '@/api/attendance/admin'
-import { pageRole } from '@/api/attendance/userRole'
+import {getAllRole, pageRole} from '@/api/attendance/userRole'
 import { allocateRole, getRoleListById } from '@/api/attendance/userRoleRelation'
 
 export default {
@@ -322,11 +322,8 @@ export default {
       })
     },
     getRoleList() {
-      pageRole(qs.stringify({
-        pageNum: 1,
-        pageSize: 99
-      })).then(res => {
-        this.roleList = res.data
+      getAllRole().then(res => {
+        this.roleList = res
       })
     },
     handleRoleId(roleId) {

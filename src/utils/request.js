@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken, setToken } from '@/utils/auth'
+import {assertSuccessMessage} from "@/utils/message";
 // const baseURL = 'http://47.113.191.204:9527/api'
 
 // create an axios instance
@@ -62,6 +63,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
+      assertSuccessMessage(res.message)
       return response
     }
   },

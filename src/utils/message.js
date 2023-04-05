@@ -8,7 +8,7 @@ export function assertSuccessMessage(message) {
   Message({
     message: message,
     type: 'success',
-    duration: 5 * 1000
+    duration: 1 * 1000
   })
 }
 /**
