@@ -39,3 +39,13 @@ export const pageRole = (searchParam) => {
       return false
     })
 }
+
+export const getAllRole = (searchParam) => {
+  return service.get(PREFIX + 'all/enable/role', searchParam)
+    .then(res => {
+      return res.data.data
+    })
+    .catch(res => {
+      return false
+    })
+}

@@ -35,14 +35,14 @@
         </el-row>
       </el-card>
       <el-dialog
-        title="添加学生信息"
+        :title="isEdit ? '修改学生信息' : '添加学生信息'"
         :visible.sync="studentDialog"
         width="30%"
         center
       >
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="学号">
-            <el-input v-model="form.username"></el-input>
+            <el-input v-model="form.username" :disabled="isEdit"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
             <el-input v-model="form.nickName"></el-input>
@@ -70,8 +70,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" v-if="!isEdit">立即创建</el-button>
-            <el-button type="primary" @click="onEdit" v-else>编辑</el-button>
+            <el-button type="primary" v-if="!isEdit" @click="onSubmit" >立即创建</el-button>
+            <el-button type="primary" v-else @click="onEdit" >编辑</el-button>
             <el-button @click="studentDialog = false">取消</el-button>
           </el-form-item>
         </el-form>
@@ -125,17 +125,17 @@
         >
           <template slot-scope="scope">
             <el-button
-              type="primary"
               size="small"
-              icon="el-icon-edit"
               @click="editStudent(scope.row)"
-            />
+            >编辑
+            </el-button>
             <el-button
               type="danger"
-              icon="el-icon-delete"
               size="small"
               @click="deleteStudent(scope.row.id)"
-            />
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

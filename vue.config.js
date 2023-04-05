@@ -39,16 +39,17 @@ module.exports = {
         pathRewrite: {
           '^/stage-api': '' // stage 环境
         }
+      },
+      'api': {
+        target: 'http://47.113.191.204:9527/api',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '' // pro 环境
+        }
       }
     },
-    'api': {
-      target: 'http://47.113.191.204:9527/api',
-      ws: true,
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api': '' // pro 环境
-      }
-    }
+
   },
   configureWebpack: {
     name: name,
