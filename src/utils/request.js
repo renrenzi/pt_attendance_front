@@ -3,7 +3,7 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import {assertSuccessMessage} from "@/utils/message";
-// const baseURL = 'http://47.113.191.204:9527/api'
+const baseURL = 'http://47.113.191.204:9527/api'
 
 // create an axios instance
 const service = axios.create({
@@ -45,6 +45,7 @@ service.interceptors.response.use(
         location.reload()
       }
       // 权限不足
+      // eslint-disable-next-line no-empty
       if (res.code === 4003) {
 
       }
@@ -63,7 +64,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      assertSuccessMessage(res.message)
+      /* assertSuccessMessage(res.message)*/
       return response
     }
   },

@@ -25,7 +25,7 @@ module.exports = {
     },
     proxy: {
       'dev-api': {
-        target: 'http://localhost:9527/api',
+        target: 'http://localhost:9527',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -48,7 +48,7 @@ module.exports = {
           '^/api': '' // pro 环境
         }
       }
-    },
+    }
 
   },
   configureWebpack: {
