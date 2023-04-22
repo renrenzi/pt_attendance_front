@@ -223,18 +223,6 @@
             >
               分配角色
             </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-edit"
-              @click="handleEditUser(scope.row)"
-            />
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="small"
-              @click="deleteUser(scope.row.adminUserId)"
-            />
           </template>
         </el-table-column>
       </el-table>
@@ -332,7 +320,7 @@ export default {
         }
       })
       this.roleList.push({
-        roleId: '10',
+        roleId: '9',
         roleName: '管理员'
       })
     },

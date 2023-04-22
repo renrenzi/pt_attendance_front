@@ -237,7 +237,7 @@
 import {batchDeleteAttendance, pageAttendanceList, updateAttendance} from '@/api/attendance/attendance'
 import {pageStudentList} from "@/api/attendance/student";
 import {pageCourseList} from "@/api/attendance/course";
-import {assertNormalMessage, assertSuccessMessage} from "@/utils/message";
+import {assertFailMessage, assertNormalMessage, assertSuccessMessage} from "@/utils/message";
 
 export default {
   name: 'AttendanceList',
@@ -350,6 +350,7 @@ export default {
       updateAttendance(this.attendance).then(res => {
         this.searchAttendance()
         this.attendanceDialog = false
+        assertSuccessMessage(res.message)
       })
     },
     editAttendance(attendance) {

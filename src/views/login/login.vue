@@ -88,8 +88,11 @@ export default {
         userName: this.loginForm.username,
         password: this.loginForm.password
       }).then(res => {
-        setToken(res.data.token)
-        this.$router.push({ path: '/home' })
+        if (res.code === 2000) {
+          setToken(res.data.token)
+          this.$store.state.detail = res.data.detail
+          this.$router.push({ path: '/home' })
+        }
       })
     }
   }

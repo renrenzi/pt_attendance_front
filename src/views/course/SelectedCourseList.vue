@@ -223,6 +223,7 @@ export default {
       updateSelectedCourse(this.selectedCourse).then(res => {
         this.selectedCourseDialog = false
         this.handleCurrentChange(1)
+        assertSuccessMessage(res.message)
       })
     },
     getCourseList() {

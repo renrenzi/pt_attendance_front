@@ -310,6 +310,7 @@ export default {
       updateLeaveInfo(this.leave).then(res => {
         this.searchLeave()
         this.leaveFlag = false
+        assertSuccessMessage(res.message)
       })
     },
     searchLeave() {

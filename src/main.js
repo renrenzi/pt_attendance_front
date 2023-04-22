@@ -11,6 +11,7 @@ import 'mavon-editor/dist/css/index.css'
 import moment from 'moment/moment'
 import vueParticleLine from 'vue-particle-line'
 import 'vue-particle-line/dist/vue-particle-line.css'
+import echarts from './assets/js/echarts.min.js'
 
 import '@/styles/index.scss' // global css
 
@@ -48,6 +49,7 @@ Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
+  echarts,
   router,
   store,
   render: h => h(App)
