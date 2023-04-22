@@ -25,7 +25,7 @@ module.exports = {
     },
     proxy: {
       'dev-api': {
-        target: 'http://localhost:9527',
+        target: 'http://localhost:9527/api',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

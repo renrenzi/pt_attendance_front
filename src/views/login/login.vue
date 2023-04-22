@@ -38,7 +38,8 @@
     <div class="el-login-footer">
       <span>Copyright © 2021-2022 RenRenZi All Rights Reserved.</span>
       <el-link href="https://beian.miit.gov.cn/#/Integrated/recordQuery">闽ICP备2022003846号</el-link>
-      Powered by <el-link href="#" target="_blank">任人子</el-link>
+      Powered by
+      <el-link href="#" target="_blank">任人子</el-link>
     </div>
   </div>
 
@@ -47,7 +48,7 @@
 <script>
 
 import { setToken } from '@/utils/auth'
-import {userLoginInfo} from "@/api/attendance/admin";
+import { userLoginInfo } from '@/api/attendance/admin'
 
 export default {
   name: 'Login',
@@ -83,12 +84,12 @@ export default {
   },
   methods: {
     login() {
-       userLoginInfo({
+      userLoginInfo({
         userName: this.loginForm.username,
         password: this.loginForm.password
       }).then(res => {
-         setToken(res.data)
-         this.$router.push({ path: '/home' })
+        setToken(res.data.token)
+        this.$router.push({ path: '/home' })
       })
     }
   }

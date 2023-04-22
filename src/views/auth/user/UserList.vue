@@ -266,7 +266,7 @@ export default {
       imgUrl: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.QyT8CYs4Me-mZi9LfEDNtQHaHa?w=192&h=192&c=7&r=0&o=5&dpr=2.2&pid=1.7',
       adminUserId: null,
       requestIds: null,
-      roleList: {},
+      roleList: [],
       userRoleList: [],
       adminUser: {
         locked: 0
@@ -325,7 +325,15 @@ export default {
     },
     getRoleList() {
       getAllRole().then(res => {
-        this.roleList = res
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].roleName === '学生' || res[i].roleName === '教师') {
+            this.roleList.push(res[i])
+          }
+        }
+      })
+      this.roleList.push({
+        roleId: '10',
+        roleName: '管理员'
       })
     },
     handleRoleId(roleId) {
