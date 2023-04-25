@@ -32,12 +32,12 @@
               size="small"
               @click="searchAttendance"
             />
-            <el-button
+<!--            <el-button
               type="primary"
               size="small"
             >
               导出
-            </el-button>
+            </el-button>-->
           </el-col>
 
         </el-row>
