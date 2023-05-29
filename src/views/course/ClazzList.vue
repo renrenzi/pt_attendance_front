@@ -202,6 +202,7 @@ export default {
       editClazzInfo(clazz).then(res => {
         this.handleCurrentChange(1)
         this.isVisible = false
+        assertSuccessMessage(res.message)
       })
     },
     toggleSelection(rows) {

@@ -1,14 +1,13 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken, removeToken, setToken } from '@/utils/auth'
-import {assertSuccessMessage} from "@/utils/message";
-// const baseURL = 'http://47.113.191.204:9527/api'
+import { getToken, removeToken } from '@/utils/auth'
+const baseURL = 'http://47.113.191.204:9527/api'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // baseURL: baseURL, // url = base url + request url
+  // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: baseURL, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 
@@ -18,7 +17,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     config.headers.Authorization = getToken()
-    config.url = config.url +"?Authorization="+ getToken()
+    config.url = config.url + '?Authorization=' + getToken()
     return config
   },
   error => {
@@ -45,6 +44,7 @@ service.interceptors.response.use(
         location.reload()
       }
       // 权限不足
+      // eslint-disable-next-line no-empty
       if (res.code === 4003) {
 
       }
@@ -63,7 +63,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      assertSuccessMessage(res.message)
+      /* assertSuccessMessage(res.message)*/
       return response
     }
   },

@@ -117,8 +117,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { logOut } from '@/api/attendance/admin'
-import { removeToken } from '@/utils/auth'
+ import { removeToken } from '@/utils/auth'
 
 export default {
   components: {
@@ -202,7 +201,6 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await logOut(this.adminUserId)
       removeToken()
       this.$router.push(`/login`)
     }

@@ -155,6 +155,7 @@
 <script>
 import {addStudent, batchDeleteStudentList, pageStudentList, updateStudentInfo} from '@/api/attendance/student'
 import {getAllClazz} from "@/api/attendance/clazz";
+import {assertSuccessMessage} from "@/utils/message";
 
 export default {
   name: 'StudentList',
@@ -192,6 +193,7 @@ export default {
         this.studentDialog = false
         this.isEdit = false
         this.handleCurrentChange(1)
+        assertSuccessMessage(res.message)
       })
     },
     editStudent(student) {
@@ -213,6 +215,7 @@ export default {
       addStudent(this.form).then(res => {
         this.handleCurrentChange(1)
         this.studentDialog = false
+        assertSuccessMessage(res.message)
       })
     },
     refreshStudentList() {

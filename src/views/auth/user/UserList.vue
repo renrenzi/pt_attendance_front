@@ -54,7 +54,7 @@
               <el-input v-model="condition.loginUserName" :gutter="10" placeholder="请输入用户名" />
             </el-col>
             <el-col :span="4">
-              <el-select v-model="condition.roleId" :span="4"  placeholder="请选择角色标签">
+              <el-select v-model="condition.roleId" :span="4" placeholder="请选择角色标签">
                 <el-option
                   v-for="item in roleList"
                   :key="item.roleId"
@@ -188,7 +188,7 @@
           <template slot-scope="scope">
             <el-image
               style="width: 30px; height: 30px"
-              :src="scope.row.imgUrl"
+              :src="imgUrl"
               fit="fill"
             />
           </template>
@@ -223,18 +223,6 @@
             >
               分配角色
             </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-edit"
-              @click="handleEditUser(scope.row)"
-            />
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="small"
-              @click="deleteUser(scope.row.adminUserId)"
-            />
           </template>
         </el-table-column>
       </el-table>
@@ -254,17 +242,19 @@
 
 <script>
 import qs from 'qs'
-import {deleteUsers, editUserInfo, pageAdminInfoList, registerUser} from '@/api/attendance/admin'
-import {getAllRole, pageRole} from '@/api/attendance/userRole'
+import { deleteUsers, editUserInfo, pageAdminInfoList, registerUser } from '@/api/attendance/admin'
+// eslint-disable-next-line no-unused-vars
+import { getAllRole, pageRole } from '@/api/attendance/userRole'
 import { allocateRole, getRoleListById } from '@/api/attendance/userRoleRelation'
 
 export default {
   name: 'UserManager',
   data() {
     return {
+      imgUrl: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.QyT8CYs4Me-mZi9LfEDNtQHaHa?w=192&h=192&c=7&r=0&o=5&dpr=2.2&pid=1.7',
       adminUserId: null,
       requestIds: null,
-      roleList: {},
+      roleList: [],
       userRoleList: [],
       adminUser: {
         locked: 0
@@ -323,7 +313,15 @@ export default {
     },
     getRoleList() {
       getAllRole().then(res => {
-        this.roleList = res
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].roleName === '学生' || res[i].roleName === '教师') {
+            this.roleList.push(res[i])
+          }
+        }
+      })
+      this.roleList.push({
+        roleId: '9',
+        roleName: '管理员'
       })
     },
     handleRoleId(roleId) {

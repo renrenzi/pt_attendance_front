@@ -4,7 +4,7 @@
       <el-row style="background: rgb(238, 241, 246);height: 40px;margin-top: 20px;margin-left: 10px" type="flex">
         <el-col :span="4" style="margin-top: 10px;margin-left: 10px">
           欢迎管理员：
-          <span style="color: red">{{ this.$store.state.adminUser.nickName }}</span>
+          <span style="color: red">{{ this.$store.state.detail.username }}</span>
         </el-col>
         <el-col style="margin-top: 5px;margin-left: -30px">
           <el-divider direction="vertical" />
@@ -14,8 +14,7 @@
             :value="date"
             title="当前时间："
             time-indices
-          >
-          </el-statistic>
+          />
         </el-col>
 
       </el-row>
@@ -25,15 +24,16 @@
       <el-row :gutter="20" style="margin-top: 10px">
         <el-col :span="6" :push="1">
           <div class="out-border">
-            <div class="layout-title">文章数</div>
+            <div class="layout-title">课程数</div>
             <div class="color-main address-content">
               {{ count.info }}
             </div>
           </div>
         </el-col>
+
         <el-col :span="6" :push="2">
           <div class="out-border">
-            <div class="layout-title">分类数</div>
+            <div class="layout-title">专业数</div>
             <div class="color-main address-content">
               {{ count.category }}
             </div>
@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="6" :push="3">
           <div class="out-border">
-            <div class="layout-title">标签数</div>
+            <div class="layout-title">选课数</div>
             <div class="color-main address-content">
               {{ count.tag }}
             </div>
@@ -53,7 +53,7 @@
       <el-row :gutter="20" style="margin-top: 10px; margin-bottom: 10px">
         <el-col :span="6" :push="1">
           <div class="out-border">
-            <div class="layout-title">评论数</div>
+            <div class="layout-title">考勤数</div>
             <div class="color-main address-content">
               {{ count.comment }}
             </div>
@@ -61,7 +61,7 @@
         </el-col>
         <el-col :span="6" :push="2">
           <div class="out-border">
-            <div class="layout-title">友情链接</div>
+            <div class="layout-title">请假数</div>
             <div class="color-main address-content">
               {{ count.link }}
             </div>
@@ -69,7 +69,7 @@
         </el-col>
         <el-col :span="6" :push="3">
           <div class="out-border">
-            <div class="layout-title">热门文章</div>
+            <div class="layout-title">用户数</div>
             <div class="color-main address-content">
               999
             </div>
@@ -112,25 +112,34 @@
 <script>
 import { getConfigList } from '@/api/attendance/config'
 import { getCount } from '@/api/attendance/admin'
-
+import LineChar from '@/components/LineChat'
 export default {
   name: 'Home',
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    LineChar
+  },
   data() {
     return {
       tableData: [],
       date: Date.now(),
       count: {
-        info: '',
-        category: '',
-        comment: '',
-        tag: '',
-        link: ''
+        info: '112',
+        category: '23',
+        comment: '43',
+        tag: '423',
+        link: '123'
       },
-      nowTime: ''
+      nowTime: '',
+      line_obj_diet_diary: {
+        names: [],
+        xAxis: [],
+        values: []
+      }
     }
   },
   created() {
-    /*this.loadTime()*/
+    /* this.loadTime()*/
     this.getConfigList()
     this.getCounts()
   },

@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    detail: {},
     settings: {
       sidebarLogo: ''
     },
@@ -18,7 +19,7 @@ const store = new Vuex.Store({
       loginUserName: ''
     },
     token: '',
-    imgUrl: '',
+    imgUrl: 'https://tse2-mm.cn.bing.net/th/id/OIP-C.QyT8CYs4Me-mZi9LfEDNtQHaHa?w=192&h=192&c=7&r=0&o=5&dpr=2.2&pid=1.7',
     userUrl: 'https://haise.oss-cn-fuzhou.aliyuncs.com/carousel1.png',
     loginBackgroundImage: 'https://haise.oss-cn-fuzhou.aliyuncs.com/carousel1.png',
     categoryIcon: 'https://haise.oss-cn-fuzhou.aliyuncs.com/carousel1.png'

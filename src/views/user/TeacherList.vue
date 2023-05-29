@@ -149,6 +149,7 @@
 <script>
 import {addTeacher, batchDeleteTeacher, pageTeacherList, updateTeacherInfo} from "@/api/attendance/teacher";
 import {getAllClazz} from "@/api/attendance/clazz";
+import {assertSuccessMessage} from "@/utils/message";
 
 export default {
   name: 'StudentList',
@@ -199,12 +200,14 @@ export default {
         this.teacherDialog = false
         this.isEdit = false
         this.handleCurrentChange(1)
+        assertSuccessMessage(res.message)
       })
     },
     onSubmit() {
       addTeacher(this.form).then(res => {
         this.teacherDialog = false
         this.handleCurrentChange(1)
+        assertSuccessMessage(res.message)
       })
     },
     deleteTeacher(id) {

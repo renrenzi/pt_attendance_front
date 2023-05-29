@@ -211,6 +211,7 @@ export default {
       }).then(res => {
         this.handleCurrentChange(1)
         this.isVisible = false
+        assertSuccessMessage(res.message)
       })
     },
     editCourse(course) {
