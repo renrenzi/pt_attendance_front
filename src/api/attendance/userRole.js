@@ -35,7 +35,7 @@ export const pageRole = (searchParam) => {
     .then(res => {
       return res.data.data
     })
-    .catch(res => {
+    .catch(() => {
       return false
     })
 }
