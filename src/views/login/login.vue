@@ -46,8 +46,8 @@
 
 <script>
 
-import { setToken } from '@/utils/auth'
-import {userLoginInfo} from "@/api/attendance/admin";
+import {setToken, setUser, setUserKey} from '@/utils/auth'
+import { userLoginInfo } from '@/api/attendance/admin'
 
 export default {
   name: 'Login',
@@ -83,12 +83,13 @@ export default {
   },
   methods: {
     login() {
-       userLoginInfo({
+      userLoginInfo({
         userName: this.loginForm.username,
         password: this.loginForm.password
       }).then(res => {
-         setToken(res.data)
-         this.$router.push({ path: '/home' })
+        setToken(res.data.token)
+        setUser(res.data.detail)
+        this.$router.push({ path: '/home' })
       })
     }
   }

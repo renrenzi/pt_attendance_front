@@ -12,7 +12,6 @@ export const pageAdminInfoList = (searchParam) => {
     })
 }
 
-
 export const userLoginInfo = (searchParam) => {
   return service.post(PREFIX + '/user/login/info', searchParam)
     .then(res => {
