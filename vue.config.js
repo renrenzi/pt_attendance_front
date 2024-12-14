@@ -48,7 +48,7 @@ module.exports = {
           '^/api': '' // pro 环境
         }
       }
-    },
+    }
 
   },
   configureWebpack: {
