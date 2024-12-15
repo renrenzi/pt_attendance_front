@@ -46,7 +46,7 @@
 
 <script>
 
-import {setToken, setUser, setUserKey} from '@/utils/auth'
+import { setToken, setUser } from '@/utils/auth'
 import { userLoginInfo } from '@/api/attendance/admin'
 
 export default {

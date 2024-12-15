@@ -23,8 +23,8 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :picker-options="pickerOptions">
-            </el-date-picker>
+              :picker-options="pickerOptions"
+            />
           </el-col>
           <el-col :span="4" :push="14">
             <el-button
@@ -155,12 +155,12 @@
       width="35%"
       center
     >
-      <el-row type="flex" justify="center" v-if="ableFlag">
+      <el-row v-if="ableFlag" type="flex" justify="center">
         <el-col :span="4">
           学号:
         </el-col>
         <el-col :span="20">
-          <el-input v-model="leave.userName" disabled/>
+          <el-input v-model="leave.userName" disabled />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -168,7 +168,7 @@
           姓名:
         </el-col>
         <el-col :span="20">
-          <el-input v-if="ableFlag" v-model="leave.nickname" disabled/>
+          <el-input v-if="ableFlag" v-model="leave.nickname" disabled />
           <el-select v-else v-model="leave.studentId" placeholder="请选择学生">
             <el-option
               v-for="item in studentList"
@@ -184,7 +184,7 @@
           请假详情:
         </el-col>
         <el-col :span="20">
-          <el-input v-model="leave.info"/>
+          <el-input v-model="leave.info" />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -192,7 +192,7 @@
           请假备注:
         </el-col>
         <el-col :span="20">
-          <el-input v-model="leave.remark"/>
+          <el-input v-model="leave.remark" />
         </el-col>
       </el-row>
       <el-row>
@@ -221,10 +221,10 @@
 
 <script>
 
-import {batchDeleteLeave, pageLeaveList, updateLeaveInfo} from '@/api/attendance/leave'
-import {pageStudentList} from "@/api/attendance/student";
-import {batchDeleteAttendance} from "@/api/attendance/attendance";
-import {assertNormalMessage, assertSuccessMessage} from "@/utils/message";
+import { batchDeleteLeave, pageLeaveList, updateLeaveInfo } from '@/api/attendance/leave'
+import { pageStudentList } from '@/api/attendance/student'
+import { batchDeleteAttendance } from '@/api/attendance/attendance'
+import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
 
 export default {
   name: 'LabelList',
@@ -247,30 +247,30 @@ export default {
         shortcuts: [{
           text: '最近一周',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: '最近一个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: '最近三个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
           }
         }]
       },
-      dateRange: ""
+      dateRange: ''
     }
   },
   created() {

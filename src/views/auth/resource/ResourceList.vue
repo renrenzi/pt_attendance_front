@@ -290,11 +290,11 @@ export default {
           description: this.requestParams.description,
           categoryId: this.requestParams.categoryId
         })).then(res => {
-          this.searchResource();
+          this.searchResource()
         })
       } else {
         addResource(qs.stringify(this.requestParams)).then(res => {
-          this.searchResource();
+          this.searchResource()
         })
       }
       this.isAdd = false

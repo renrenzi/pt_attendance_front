@@ -22,8 +22,8 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :picker-options="pickerOptions">
-            </el-date-picker>
+              :picker-options="pickerOptions"
+            />
           </el-col>
           <el-col :span="4" :push="14">
             <el-button
@@ -65,11 +65,11 @@
         width="30%"
         size="small"
       >
-        <el-input/>
+        <el-input />
         <span slot="footer" class="dialog-footer">
-              <el-button >取 消</el-button>
-              <el-button type="primary">确 定</el-button>
-            </span>
+          <el-button>取 消</el-button>
+          <el-button type="primary">确 定</el-button>
+        </span>
       </el-dialog>
     </el-header>
     <el-main>
@@ -157,8 +157,8 @@
       width="35%"
       center
     >
-      <el-row type="flex" justify="center" v-if="ableFlag">
-        <el-col :span="4" >
+      <el-row v-if="ableFlag" type="flex" justify="center">
+        <el-col :span="4">
           学号:
         </el-col>
         <el-col :span="20">
@@ -220,8 +220,8 @@
           <el-date-picker
             v-model="attendance.date"
             type="datetime"
-            placeholder="选择日期时间">
-          </el-date-picker>
+            placeholder="选择日期时间"
+          />
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
@@ -234,10 +234,10 @@
 </template>
 
 <script>
-import {batchDeleteAttendance, pageAttendanceList, updateAttendance} from '@/api/attendance/attendance'
-import {pageStudentList} from "@/api/attendance/student";
-import {pageCourseList} from "@/api/attendance/course";
-import {assertNormalMessage, assertSuccessMessage} from "@/utils/message";
+import { batchDeleteAttendance, pageAttendanceList, updateAttendance } from '@/api/attendance/attendance'
+import { pageStudentList } from '@/api/attendance/student'
+import { pageCourseList } from '@/api/attendance/course'
+import { assertNormalMessage, assertSuccessMessage } from '@/utils/message'
 
 export default {
   name: 'AttendanceList',
@@ -290,30 +290,30 @@ export default {
         shortcuts: [{
           text: '最近一周',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: '最近一个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: '最近三个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
           }
         }]
       },
-      dateRange: ""
+      dateRange: ''
     }
   },
   created() {

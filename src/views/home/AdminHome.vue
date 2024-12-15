@@ -14,8 +14,7 @@
             :value="date"
             title="当前时间："
             time-indices
-          >
-          </el-statistic>
+          />
         </el-col>
 
       </el-row>
@@ -63,7 +62,7 @@
           <div class="out-border">
             <div class="layout-title">友情链接</div>
             <div class="color-main address-content">
-              {{ count.link }}
+              {{ count.lin }}
             </div>
           </div>
         </el-col>
@@ -111,7 +110,7 @@
 
 <script>
 import { getConfigList } from '@/api/attendance/config'
-import { getCount } from '@/api/attendance/admin'
+import { getCountInfo } from '@/api/attendance/admin'
 
 export default {
   name: 'Home',
@@ -124,13 +123,13 @@ export default {
         category: '',
         comment: '',
         tag: '',
-        link: ''
+        lin: ''
       },
       nowTime: ''
     }
   },
   created() {
-    /*this.loadTime()*/
+    /* this.loadTime()*/
     this.getConfigList()
     this.getCounts()
   },
@@ -153,33 +152,28 @@ export default {
       var date = new Date(time)
       var hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
       var minute =
-          date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+        date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
       var second =
-          date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
       // return year + "年" + month + "月" + day + "日" + hour + ":" + minute + ":" + second;
       return (
         '<span style="font-size: 22px; text-shadow: 0px 2px 7px rgba(51, 51, 51, 0.6);">' +
-          hour +
-          ':' +
-          minute + ':' + second +
-          '</span><br/>'
+        hour +
+        ':' +
+        minute + ':' + second +
+        '</span><br/>'
 
       )
     },
 
     getCounts() {
-      const _this = this
-      getCount().then(res => {
-        if (res.code === 2000) {
-          _this.count = res.data
-        }
+      getCountInfo().then(res => {
+        this.count = res.data
       })
     },
     getConfigList() {
       getConfigList().then(res => {
-        if (res.code === 2000) {
-          this.tableData = res.data
-        }
+        this.tableData = res.data
       })
     }
   }

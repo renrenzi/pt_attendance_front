@@ -22,6 +22,17 @@ export const userLoginInfo = (searchParam) => {
     })
 }
 
+// 主页count
+export const getCountInfo = () => {
+  return service.get(PREFIX + '/get/count/info')
+    .then(res => {
+      return res.data
+    })
+    .catch(res => {
+      return false
+    })
+}
+
 export class getCount {
 }
 
